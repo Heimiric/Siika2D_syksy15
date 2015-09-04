@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="NsightTegraProject">
+    <NsightTegraProjectRevisionNumber>9</NsightTegraProjectRevisionNumber>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Tegra-Android">
+      <Configuration>Debug</Configuration>
+      <Platform>Tegra-Android</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Tegra-Android">
+      <Configuration>Release</Configuration>
+      <Platform>Tegra-Android</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidBuild Include="AndroidManifest.xml" />
+    <AndroidBuild Include="res\values\strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine\audio\Audio.cpp" />
+    <ClCompile Include="engine\audio\AudioInitializer.cpp" />
+    <ClCompile Include="engine\audio\AudioManager.cpp" />
+    <ClCompile Include="engine\audio\AudioPlayer.cpp" />
+    <ClCompile Include="engine\core\ErrorHandler.cpp" />
+    <ClCompile Include="engine\core\ResourceManager.cpp" />
+    <ClCompile Include="engine\core\Siika2D.cpp" />
+    <ClCompile Include="engine\graphics\Buffer.cpp" />
+    <ClCompile Include="engine\graphics\BufferManager.cpp" />
+    <ClCompile Include="engine\graphics\Camera.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Tegra-Android'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="engine\graphics\GraphicsContext.cpp" />
+    <ClCompile Include="engine\graphics\Shader.cpp" />
+    <ClCompile Include="engine\graphics\ShaderManager.cpp" />
+    <ClCompile Include="engine\graphics\Sprite.cpp" />
+    <ClCompile Include="engine\graphics\SpriteManager.cpp" />
+    <ClCompile Include="engine\graphics\Text.cpp" />
+    <ClCompile Include="engine\graphics\TextManager.cpp" />
+    <ClCompile Include="engine\graphics\Texture.cpp" />
+    <ClCompile Include="engine\graphics\TextureManager.cpp" />
+    <ClCompile Include="engine\misc\Color.cpp" />
+    <ClCompile Include="engine\misc\Input.cpp" />
+    <ClCompile Include="engine\misc\Timer.cpp" />
+    <ClCompile Include="inc\lodepng\lodepng.cpp" />
+    <ClCompile Include="jni\main.cpp" />
+    <ClCompile Include="native_app_glue\android_native_app_glue.c" />
+    <ClCompile Include="Siika_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="engine\audio\Audio.h" />
+    <ClInclude Include="engine\audio\AudioInitializer.h" />
+    <ClInclude Include="engine\audio\AudioManager.h" />
+    <ClInclude Include="engine\audio\AudioPlayer.h" />
+    <ClInclude Include="engine\core\ErrorHandler.h" />
+    <ClInclude Include="engine\core\MemoryManager.h" />
+    <ClInclude Include="engine\core\ResourceManager.h" />
+    <ClInclude Include="engine\core\Siika2D.h" />
+    <ClInclude Include="engine\graphics\Buffer.h" />
+    <ClInclude Include="engine\graphics\BufferManager.h" />
+    <ClInclude Include="engine\graphics\Camera.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Tegra-Android'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="engine\graphics\GraphicsContext.h" />
+    <ClInclude Include="engine\graphics\Shader.h" />
+    <ClInclude Include="engine\graphics\ShaderManager.h" />
+    <ClInclude Include="engine\graphics\Shaders.h" />
+    <ClInclude Include="engine\graphics\Sprite.h" />
+    <ClInclude Include="engine\graphics\SpriteManager.h" />
+    <ClInclude Include="engine\graphics\Text.h" />
+    <ClInclude Include="engine\graphics\TextManager.h" />
+    <ClInclude Include="engine\graphics\Texture.h" />
+    <ClInclude Include="engine\graphics\TextureManager.h" />
+    <ClInclude Include="engine\misc\Color.h" />
+    <ClInclude Include="engine\misc\Component.h" />
+    <ClInclude Include="engine\misc\GameObject.h" />
+    <ClInclude Include="engine\misc\Input.h" />
+    <ClInclude Include="engine\misc\System.h" />
+    <ClInclude Include="engine\misc\SystemManager.h" />
+    <ClInclude Include="engine\misc\Timer.h" />
+    <ClInclude Include="inc\lodepng\lodepng.h" />
+    <ClInclude Include="native_app_glue\android_native_app_glue.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{12722FF2-AD9D-4FBB-AD5D-BED439098332}</ProjectGuid>
+    <RootNamespace>Siika2D</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Tegra-Android'">
+    <AndroidTargetAPI>android-16</AndroidTargetAPI>
+    <AndroidNativeAPI>UseTarget</AndroidNativeAPI>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Tegra-Android'">
+    <AndroidTargetAPI>android-16</AndroidTargetAPI>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Tegra-Android'">
+    <ClCompile>
+      <CppLanguageStandard>gnu++11</CppLanguageStandard>
+      <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\lib\x86;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Tegra-Android'">
+    <ClCompile>
+      <CppLanguageStandard>gnu++11</CppLanguageStandard>
+      <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\lib\x86;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

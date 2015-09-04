@@ -1,0 +1,4 @@
+var searchData=
+[
+  ['siika2d',['Siika2D',['../classgraphics_1_1_buffer_manager.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::BufferManager::Siika2D()'],['../classgraphics_1_1_graphics.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::Graphics::Siika2D()'],['../classgraphics_1_1_graphics_context.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::GraphicsContext::Siika2D()'],['../classgraphics_1_1_shader_manager.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::ShaderManager::Siika2D()'],['../classgraphics_1_1_sprite_manager.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::SpriteManager::Siika2D()'],['../classgraphics_1_1_text_manager.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::TextManager::Siika2D()'],['../classgraphics_1_1_texture_manager.html#a7390b588209f3ddff65e7bec9eeed9be',1,'graphics::TextureManager::Siika2D()'],['../classmisc_1_1_input.html#a7390b588209f3ddff65e7bec9eeed9be',1,'misc::Input::Siika2D()']]]
+];
