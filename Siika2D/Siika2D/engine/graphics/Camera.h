@@ -15,7 +15,6 @@ namespace graphics
 		DOWN,
 		LEFT,
 		RIGHT,
-		STOP,
 		RESET
 	};
 

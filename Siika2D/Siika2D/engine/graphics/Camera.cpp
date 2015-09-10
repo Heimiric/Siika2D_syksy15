@@ -35,11 +35,7 @@ void Camera::moveCamera(CAMERA_MOVEMENT move)
 		_position.x = 0;
 		_position.y = 0;
 		break;
-	case STOP:
-		break;
 	default:
-		_position.x = 0;
-		_position.y = 0;
 		break;
 	}
 }
