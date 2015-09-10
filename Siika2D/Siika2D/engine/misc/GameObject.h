@@ -1,19 +1,58 @@
 #pragma once
 
-#include "../graphics/SpriteManager.h"
+#include <typeinfo>
+#include <unordered_map>
+#include "SpriteComponent.h"
 
-class GameObject
+namespace misc
 {
-public:
-	GameObject(graphics::Sprite* sprite);
-	~GameObject();
+	/**
+		Component based GameObject.
+		Made up from different components that determine what functionality the GameObject has.
+	*/
+	class GameObject
+	{
+	public:
+		GameObject();
+		~GameObject();
 
-	glm::vec2 getPosition();
+		/**
+			Adds a component to the GameObject.
+			Takes a pointer to the component as a parameter.
+		*/
+		void addComponent(Component* component);
 
-	void move(GLfloat x, GLfloat y);
-	void move(glm::vec2 moveVec);
-	//void rotate(GLfloat rotation);
-	
-private:
-	graphics::Sprite* _sprite;
-};
+		/**
+			Gets a component of given type if one exists within the GameObject.
+			Returns a pointer to the found component or a null pointer if component of the given type was not found.
+			Example of use: GameObject.getComponent<SpriteComponent>();
+		*/
+		template<typename T>
+		T* getComponent()
+		{
+			ComponentMap::const_iterator it = _components.find(&typeid(T));
+			if (it != _components.end())
+				return static_cast<T*>(it->second);
+			return nullptr;
+		}
+
+		/**
+			Removes a component of given type if one exists within the GameObject.
+			Example of use: GameObject.removeComponent<SpriteComponent>();
+		*/
+		template<typename T>
+		void removeComponent()
+		{
+			ComponentMap::const_iterator it = _components.find(&typeid(T));
+			if (it != _components.end())
+			{
+				delete it->second;
+				_components.erase(it);
+			}
+		}
+
+	private:
+		using ComponentMap = std::unordered_map < const std::type_info*, Component* > ;
+		ComponentMap _components;
+	};
+}

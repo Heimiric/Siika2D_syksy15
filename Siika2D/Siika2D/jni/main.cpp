@@ -3,6 +3,7 @@
 #include "../engine/audio/Audio.h"
 #include "../engine/misc/timer.h"
 #include "../engine/core/MemoryManager.h"
+#include "../engine/misc/GameObject.h"
 core::Siika2D *siika = core::Siika2D::UI();
 
 bool stuffDone = false;
@@ -17,6 +18,8 @@ float pos = 0;
 uint blue = 1;
 uint green = 128;
 float orientation;
+misc::GameObject go();
+
 void doStuff()
 {
 
@@ -30,6 +33,12 @@ void doStuff()
 		{
 			spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(64, 64), glm::vec2(32,32), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 		}
+
+		misc::SpriteComponent* sprtComp;
+		sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(200, 200), glm::vec2(64, 64), glm::vec2(32, 32), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
+		go.addComponent(sprtComp);
+		sprtComp->getSprite()->setColor(graphics::Color(0, 0, 0, 255));
+
 		scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
 		scream->setMaxPlayerCount(10);
 		teksti = siika->_textManager->createText();
@@ -80,6 +89,7 @@ void doStuff()
 	for (int i = 0; i < spriteVector.size(); i++)
 	{
 		spriteVector[i]->setRotation(orientation);
+		go.getComponent<misc::SpriteComponent>()->getSprite()->setRotation(-orientation);
 		if (timer.getElapsedTime(TIME::SECONDS) > 2)
 		{
 			spriteVector[i]->step();

@@ -120,6 +120,9 @@
     <ClCompile Include="Siika_main.cpp">
       <Filter>Siika2D\engine</Filter>
     </ClCompile>
+    <ClCompile Include="engine\misc\GameObject.cpp">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native_app_glue\android_native_app_glue.h">
@@ -182,12 +185,6 @@
     <ClInclude Include="engine\misc\Input.h">
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
-    <ClInclude Include="engine\misc\System.h">
-      <Filter>Siika2D\engine\misc</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\misc\SystemManager.h">
-      <Filter>Siika2D\engine\misc</Filter>
-    </ClInclude>
     <ClInclude Include="engine\misc\Timer.h">
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="engine\audio\AudioManager.h">
       <Filter>Siika2D\engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\misc\SpriteComponent.h">
+      <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

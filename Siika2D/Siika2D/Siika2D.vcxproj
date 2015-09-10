@@ -40,6 +40,7 @@
     <ClCompile Include="engine\graphics\Texture.cpp" />
     <ClCompile Include="engine\graphics\TextureManager.cpp" />
     <ClCompile Include="engine\misc\Color.cpp" />
+    <ClCompile Include="engine\misc\GameObject.cpp" />
     <ClCompile Include="engine\misc\Input.cpp" />
     <ClCompile Include="engine\misc\Timer.cpp" />
     <ClCompile Include="inc\lodepng\lodepng.cpp" />
@@ -75,8 +76,7 @@
     <ClInclude Include="engine\misc\Component.h" />
     <ClInclude Include="engine\misc\GameObject.h" />
     <ClInclude Include="engine\misc\Input.h" />
-    <ClInclude Include="engine\misc\System.h" />
-    <ClInclude Include="engine\misc\SystemManager.h" />
+    <ClInclude Include="engine\misc\SpriteComponent.h" />
     <ClInclude Include="engine\misc\Timer.h" />
     <ClInclude Include="inc\lodepng\lodepng.h" />
     <ClInclude Include="native_app_glue\android_native_app_glue.h" />
@@ -103,6 +103,7 @@
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
       <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
@@ -114,6 +115,7 @@
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
       <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
