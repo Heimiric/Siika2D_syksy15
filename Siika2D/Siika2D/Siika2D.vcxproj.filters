@@ -123,6 +123,9 @@
     <ClCompile Include="engine\misc\GameObject.cpp">
       <Filter>Siika2D\engine\misc</Filter>
     </ClCompile>
+    <ClCompile Include="engine\misc\TransformComponent.cpp">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native_app_glue\android_native_app_glue.h">
@@ -210,6 +213,9 @@
       <Filter>Siika2D\engine\audio</Filter>
     </ClInclude>
     <ClInclude Include="engine\misc\SpriteComponent.h">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\misc\TransformComponent.h">
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
   </ItemGroup>

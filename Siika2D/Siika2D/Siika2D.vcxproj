@@ -43,6 +43,7 @@
     <ClCompile Include="engine\misc\GameObject.cpp" />
     <ClCompile Include="engine\misc\Input.cpp" />
     <ClCompile Include="engine\misc\Timer.cpp" />
+    <ClCompile Include="engine\misc\TransformComponent.cpp" />
     <ClCompile Include="inc\lodepng\lodepng.cpp" />
     <ClCompile Include="jni\main.cpp" />
     <ClCompile Include="native_app_glue\android_native_app_glue.c" />
@@ -78,6 +79,7 @@
     <ClInclude Include="engine\misc\Input.h" />
     <ClInclude Include="engine\misc\SpriteComponent.h" />
     <ClInclude Include="engine\misc\Timer.h" />
+    <ClInclude Include="engine\misc\TransformComponent.h" />
     <ClInclude Include="inc\lodepng\lodepng.h" />
     <ClInclude Include="native_app_glue\android_native_app_glue.h" />
   </ItemGroup>
