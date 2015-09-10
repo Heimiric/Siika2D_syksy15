@@ -44,3 +44,9 @@ Temporary Items
 *.o
 *.tlog
 *.log
+Siika2D/Siika2D.opensdf
+Siika2D/Siika2D.sdf
+*.apk
+Siika2D/Siika2D/Tegra-Android/Debug/ant_log.xml
+Siika2D/Siika2D/Tegra-Android/Debug/bin/build.prop
+Siika2D/Siika2D/Tegra-Android/Debug/bin/Siika2D.ap_
