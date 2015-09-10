@@ -14,20 +14,29 @@ namespace graphics
 		UP,
 		DOWN,
 		LEFT,
-		RIGHT
+		RIGHT,
+		STOP,
+		RESET
 	};
 
 	class Camera
 	{
 		//friend class shader;
 	public:
-		void initialize();
+		/**Moves camera to the desired direction, stops movement or resets position
+		*/
 		void moveCamera(CAMERA_MOVEMENT move);
-		void setCameraPosition(glm::vec2 _position);
+		/**Sets camera position
+		*/
+		void setCameraPosition(glm::vec2 position);
+		/**Sets camera movement speed
+		*/
+		void setSpeed(int speed){ _step = speed; }
+		
 		void useProjection(GLint windowLocation);
 
 		/**
-		Constructor takes vec2 object
+		Constructor takes vec2 window size
 		*/
 		Camera(glm::vec2 window);
 		Camera(void){};

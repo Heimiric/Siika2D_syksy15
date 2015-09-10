@@ -23,7 +23,7 @@ void doStuff()
 	{
 		timer.start();
 		tex = siika->_textureManager->createTexture("tekstuuri.png");
-		siika->_shaderManager->useDefaultShader(true, true);
+		//siika->_shaderManager->useDefaultShader(true, true);
 		//siika->_shaderManager->useShader(true, true);
 		for (int i = 0; i < 50; i++)
 		{
@@ -66,7 +66,15 @@ void doStuff()
 	for (int i = 0; i < spriteVector.size(); i++)
 		spriteVector[i]->setColor(graphics::Color(0, green-i*10, blue-i*10, 255));
 
+	std::vector<GLint> downKeys = siika->_input->getDownKeys();
+	for (int i = 0; i < downKeys.size(); i++)
+	{
+		if (downKeys[i] == 100)
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::STOP);
+		if (downKeys[i] == 107)
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RESET);
 
+	}
 	teksti->setColor(graphics::Color(0, green, blue, 255));
 
 	blue += 2;

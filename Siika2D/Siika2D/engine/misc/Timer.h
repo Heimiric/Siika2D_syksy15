@@ -20,7 +20,7 @@ namespace misc
 		*/
 		void start();
 		/**
-		Gets time in seconds
+		Gets time in desired units enum TIME{SECONDS, MILLISECONDS, MICROSECONDS};
 		*/
 		double getElapsedTime(TIME time);
 		bool operator==(const Timer rhs)

@@ -10,7 +10,7 @@ void ShaderManager::useShader(bool color, bool texture)
 		if(_defaultIndx == -1)
 		{
 			_currentShader = new Shader(_camera,color,texture);
-			_camera->initialize();
+			//_camera->initialize();
 			_shaders.push_back(_currentShader);
 			_defaultIndx = _shaders.size()-1;
 			
