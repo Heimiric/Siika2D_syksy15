@@ -2,8 +2,8 @@
 #include "Shaders.h"
 using namespace graphics;
 
-Shader::Shader(bool color, bool texture):
-_color(color), _texture(texture)
+Shader::Shader(Camera * camera, bool color, bool texture):
+_camera(camera),_color(color), _texture(texture)
 {
 	_default = true;
 	init();
@@ -31,11 +31,11 @@ _color(color), _texture(texture)
 	_valid = compileShaders();
 	if(_valid)
 		_valid = linkProgram();
-	//valid = true if neither complie or link returned false
+	//valid = true if neither compile or link returned false
 }
 
-Shader::Shader(const GLchar * fragmentSource, const GLchar * vertexSource, bool color, bool texture) :
-_fragSource(fragmentSource), _vertSource(vertexSource), _color(color), _texture(texture)
+Shader::Shader(const GLchar * fragmentSource, const GLchar * vertexSource, Camera * camera, bool color, bool texture):
+_fragSource(fragmentSource), _vertSource(vertexSource), _camera(camera), _color(color), _texture(texture)
 {
 	_default = false;
 	init();
@@ -126,7 +126,7 @@ bool Shader::linkProgram()
 	}
 
 	GLint error = glGetError();
-
+	
 	_windowLocation = glGetUniformLocation(_program, _windowString);
 
 	assert(error == 0);
@@ -148,6 +148,7 @@ void Shader::use(bool toUse)
 	else
 	{
 		glUseProgram(0u);
+		return;
 	}
 	// Moved to linkProgram()
 	glEnableVertexAttribArray(SHADER_ATTRIBUTE::position);
@@ -155,7 +156,8 @@ void Shader::use(bool toUse)
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE::color);
 	if(_texture)
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE::texture);
-
+	_camera->useProjection(_windowLocation);
+	//glUniformMatrix4fv(_windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_camera->_windowProjection));
 	err = glGetError();
 	s2d_assert(err == 0);
 

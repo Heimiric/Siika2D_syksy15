@@ -1,6 +1,5 @@
 #pragma once
 #include "Shader.h"
-
 #include "../core/ErrorHandler.h"
 #include "../core/ResourceManager.h"
 #include "Camera.h"

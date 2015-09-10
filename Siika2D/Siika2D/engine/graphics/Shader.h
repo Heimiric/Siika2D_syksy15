@@ -1,8 +1,8 @@
 #pragma once
 #include <EGL/egl.h>
 #include <GLES2\gl2.h>
-#include "../core/ErrorHandler.h"
-//#include "GL\glew.h"
+#include "..\core\ErrorHandler.h"
+#include "Camera.h"
 #include <assert.h>
 #include <string>
 namespace graphics
@@ -29,8 +29,8 @@ namespace graphics
 		///Gets and activates texture sampler
 		void useSampler();
 		///Shader must be created using ShaderManager::createShader()
-		Shader(bool color = false, bool texture = false);
-		Shader(const GLchar * fragmentSource, const GLchar * vertexSource, bool color = false, bool texture = false);
+		Shader(Camera * camera = nullptr, bool color = false, bool texture = false);
+		Shader(const GLchar * fragmentSource, const GLchar * vertexSource, Camera * camera = nullptr, bool color = false, bool texture = false);
 		~Shader();
 		void setColor(bool toSet){ _color = toSet; }
 		void setTexture(bool toSet){ _texture = toSet; }
@@ -46,10 +46,10 @@ namespace graphics
 		const GLchar * _fragSource;
 		const GLchar * _vertSource;
 		GLuint _program;
-
 		GLchar * _posString = "position";
 		GLchar * _colString = "color";
 		GLchar * _texString = "texture";
 		GLchar * _windowString = "window";
+		Camera * _camera;
 	};
 }

@@ -9,8 +9,8 @@ void ShaderManager::useShader(bool color, bool texture)
 		//Gets default shader
 		if(_defaultIndx == -1)
 		{
-			_currentShader = new Shader(color,texture);
-			_camera->initialize(_currentShader);
+			_currentShader = new Shader(_camera,color,texture);
+			_camera->initialize();
 			_shaders.push_back(_currentShader);
 			_defaultIndx = _shaders.size()-1;
 			
@@ -27,7 +27,7 @@ void ShaderManager::useShader(bool color, bool texture)
 }
 void ShaderManager::useDefaultShader(bool color, bool texture)
 {
-	Shader * shdr = new Shader(color, texture);
+	Shader * shdr = new Shader(_camera,color, texture);
 	Shader * found = findShader(shdr->_vertSource, shdr->_fragSource);
 	if(found)
 	{
@@ -52,7 +52,7 @@ Shader * ShaderManager::createShader(char * vertPath, char * fragPath)
 	Shader * newShdr = findShader(vertSource->c_str(), fragSource->c_str());
 	if(!newShdr)
 	{
-		newShdr = new Shader(fragSource->c_str(), vertSource->c_str());
+		newShdr = new Shader(fragSource->c_str(), vertSource->c_str(),_camera);
 		if(newShdr->_valid)
 			_shaders.push_back(newShdr); 
 		else // Compile or link failed infolog in logcat

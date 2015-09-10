@@ -12,27 +12,28 @@ Camera::~Camera()
 
 }
 
-void Camera::initialize(Shader* shader)
+void Camera::initialize()
 {
 
 	GLint error;
 	error = glGetError();
-	s2d_assert(error == 0);
+	//s2d_assert(error == 0);
 	/**
 		Initialize window projection matrix
 	*/
-	shader->use();
+	//shader->use();
 	_windowProjection = glm::ortho(0.0f, _displaySize.x, _displaySize.y, 0.0f, -1.0f, 1.0f);
 
-	_windowLocation = shader->_windowLocation;
+	//_windowLocation = shader->_windowLocation;
 	error = glGetError();
 	s2d_assert(error == 0);
 
 
 	/**
+		done automatically on shader.use()
 		Pass to shaders
 	*/
-	glUniformMatrix4fv(_windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_windowProjection));
+	//glUniformMatrix4fv(_windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_windowProjection));
 	 
 	/**
 		Initialize view projection matrix 
@@ -57,7 +58,7 @@ void Camera::initialize(Shader* shader)
 
 	glUniformMatrix4fv(_worldLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_worldProjection));*/
 
-	shader->use(false);
+	//shader->use(false);
 }
 
 void Camera::moveCamera(CAMERA_MOVEMENT move)
@@ -65,19 +66,23 @@ void Camera::moveCamera(CAMERA_MOVEMENT move)
 	switch (move)
 	{
 	case UP:
-
+		_position.y += -_step;
 		break;
 	
 	case DOWN:
-
+		_position.y += _step;
 		break;
 		
 	case LEFT:
-
+		_position.x += _step;
 		break;
 
 	case RIGHT:
-
+		_position.x += -_step;
+		break;
+	default:
+		_position.x = 0;
+		_position.y = 0;
 		break;
 	}
 }
@@ -87,14 +92,18 @@ void Camera::setCameraPosition(glm::vec2 _position)
 
 }
 
-void Camera::useProjection(Shader *shader)
+void Camera::useProjection(GLint windowLocation)
 {
+	_windowProjection = glm::ortho(0.0f, _displaySize.x, _displaySize.y + _position.y, 0.0f + _position.y, -1.0f, 1.0f);
+	glUniformMatrix4fv(windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_windowProjection));
+	/*
 	shader->use();
 	GLint err = glGetError();
-	_windowProjection = glm::ortho(0.0f, _displaySize.x, _displaySize.y, 0.0f, -1.0f, 1.0f);
+	
 	glUniformMatrix4fv(shader->_windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_windowProjection));
 	err = glGetError();
 	int i = 0;
+	*/
 }
 
 
