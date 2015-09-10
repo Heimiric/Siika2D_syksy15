@@ -23,35 +23,35 @@ enum SENSOR_ID
 }; 
 
 
-struct Finger
-{
-
-	/**
-		Current press location
-	*/
-	glm::vec2 _positionCurrent = glm::vec2(0.f, 0.f);
-
-	/**
-		Location where the last touch event started
-	*/
-	glm::vec2 _positionStart = glm::vec2(0.f, 0.f);
-
-	/**
-		Location where the touch event ended
-	*/
-	glm::vec2 _positionEnd = glm::vec2(0.f, 0.f);
-
-};
-
-struct Stick
-{
-	glm::vec2 _pointingVector = glm::vec2(0.f, 0.f);
-	float _rotation = 0;
-};
-
-
 namespace misc
 {
+	struct Finger
+	{
+
+		/**
+			Current press location
+		*/
+		glm::vec2 _positionCurrent = glm::vec2(0.f, 0.f);
+
+		/**
+			Location where the last touch event started
+		*/
+		glm::vec2 _positionStart = glm::vec2(0.f, 0.f);
+
+		/**
+			Location where the touch event ended
+		*/
+		glm::vec2 _positionEnd = glm::vec2(0.f, 0.f);
+
+	};
+
+	struct Stick
+	{
+		glm::vec2 _pointingVector = glm::vec2(0.f, 0.f);
+		float _rotation = 0;
+	};
+
+
 	/**
 		Singleton class that handles all the input coming from the device
 							Used from Siika2D-class
