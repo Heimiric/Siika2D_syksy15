@@ -2,14 +2,28 @@
 
 using namespace misc;
 
-GameObject::GameObject(unsigned int id)
+GameObject::GameObject()
 {
-	_id = id;
 }
-
 
 GameObject::~GameObject()
 {
+}
+
+void GameObject::update()
+{
+	TransformComponent* transformComp = getComponent<TransformComponent>();
+	if (transformComp != nullptr)
+	{
+		SpriteComponent* spriteComp = getComponent<SpriteComponent>();
+		if (spriteComp != nullptr)
+		{
+			graphics::Sprite* spriteToUpdate = spriteComp->getSprite();
+
+			spriteToUpdate->setPosition(transformComp->getPosition());
+			spriteToUpdate->setRotation(transformComp->getRotation());
+		}
+	}
 }
 
 void GameObject::addComponent(Component* component)

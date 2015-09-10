@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include <unordered_map>
 #include "SpriteComponent.h"
+#include "TransformComponent.h"
 
 namespace misc
 {
@@ -15,6 +16,13 @@ namespace misc
 	public:
 		GameObject();
 		~GameObject();
+
+		/**
+			Updates components in GameObject.
+			Checks if there are components added that need updating and updates them with the relevant info from other components, 
+			for example SpriteComponent is updated with info from the TransformComponent.
+		*/
+		void update();
 
 		/**
 			Adds a component to the GameObject.

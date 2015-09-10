@@ -20,7 +20,7 @@ namespace misc
 		~SpriteComponent(){}
 
 		/**
-			Retrives sprite pointer from the component for use.
+			Retrives sprite pointer from the component.
 		*/
 		graphics::Sprite* getSprite()
 		{
