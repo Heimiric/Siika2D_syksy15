@@ -24,7 +24,7 @@ namespace graphics
 		bool hasTexture(){ return _texture; }
 		GLint _windowLocation;
 
-
+		bool _color, _texture;
 	private:
 		///Gets and activates texture sampler
 		void useSampler();
@@ -41,7 +41,7 @@ namespace graphics
 		bool _default, _valid;
 		std::string getProgramInfoLog(GLuint handle);
 		std::string getShaderInfoLog(GLuint handle);
-		bool _color, _texture;
+		
 		GLuint _fragHandle, _vertHandle, _samplerHandle;
 		const GLchar * _fragSource;
 		const GLchar * _vertSource;

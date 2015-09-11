@@ -3,6 +3,7 @@
 #include "engine/graphics/Buffer.h"
 
 void extern siika_main();
+void extern siika_init();
 
 #pragma once
 namespace core
@@ -34,10 +35,21 @@ void android_main(android_app* app)
 {
 	core::AndroidInterface AIF(app);
 
+	bool initDone = false;
+
 	while (!app->destroyRequested)
 	{
 		if (app->activityState != APP_CMD_STOP && AIF._siika->drawReady() == true)
+		{
+			if (!initDone)
+			{
+				siika_init();
+				initDone = true;
+			}
+
 			siika_main();
+		}
+
 
 		AIF.processAndroidCmds(app);
 	}

@@ -38,7 +38,10 @@ namespace graphics
 	protected:
 		Sprite(){};
 		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin) :
-			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0){};
+			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0)
+		{
+			_col = new Color(0, 0, 0, 0);
+		};
 		/**
 		Position: position of the sprite
 		Size: size of the sprite
@@ -51,7 +54,10 @@ namespace graphics
 
 		*/
 		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth) :
-			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0){};
+			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0)
+		{
+			_col = new Color(0, 0, 0, 0);
+		};
 		~Sprite()
 		{
 			delete _col;

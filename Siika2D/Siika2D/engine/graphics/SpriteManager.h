@@ -4,7 +4,7 @@
 #include "Shader.h"
 #include "BufferManager.h"
 #include "ShaderManager.h"
-#include <map>
+#include <unordered_map>
 #include "../glm/vec2.hpp"
 #include "Texture.h"
 #include "ShaderManager.h"
@@ -46,7 +46,7 @@ namespace graphics
 		};
 		BufferManager * _bufferManager;
 		void batchSprites(std::vector<Sprite*> *toBatch){};
-		std::map<Shader*, sprites_buffer*> _sprites;
+		std::unordered_map<Shader*, sprites_buffer*> _sprites;
 		///Batches the given vector of sprites
 		void spriteBatcher(std::vector<Sprite> *toBatch);
 		ShaderManager* _shaderManager;

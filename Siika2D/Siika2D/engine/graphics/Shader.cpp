@@ -156,7 +156,8 @@ void Shader::use(bool toUse)
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE::color);
 	if(_texture)
 		glEnableVertexAttribArray(SHADER_ATTRIBUTE::texture);
-	_camera->useProjection(_windowLocation);
+	if (_windowLocation > -1)
+		_camera->useProjection(_windowLocation);
 	//glUniformMatrix4fv(_windowLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&_camera->_windowProjection));
 	err = glGetError();
 	s2d_assert(err == 0);

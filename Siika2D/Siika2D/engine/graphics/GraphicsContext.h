@@ -5,6 +5,7 @@
 #include <../glm/vec2.hpp>
 #include "../../native_app_glue/android_native_app_glue.h"
 #include "../core/ErrorHandler.h"
+#include "../misc/Color.h"
 
 /**
 	Initializes OpenGL ES 2.0 context
@@ -35,6 +36,11 @@ namespace graphics
 			Swap buffers
 		*/
 		void swap();
+
+		/**
+			Set clear color
+		*/
+		void setClearColor(Color clearColor);
 
 		glm::vec2 getDisplaySize();
 

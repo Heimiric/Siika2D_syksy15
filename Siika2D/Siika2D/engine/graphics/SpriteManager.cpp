@@ -14,7 +14,7 @@ void SpriteManager::drawSprites()
 	int spriteCount = 0;
 	//GLfloat vertices[16]; // Pos Tex
 
-	for(std::map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
+	for(std::unordered_map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
 	{
 		GLint p = position, c = color, t = texture;
 		Shader * curShader = it->first;
@@ -52,22 +52,26 @@ void SpriteManager::drawSprites()
 			else
 				_bufferManager->addRectangle(positions, textures, col);
 		
+			glBindTexture(GL_TEXTURE_2D, (*sit)->_texture->getTexture());
+			_bufferManager->draw();
+			_bufferManager->clear();
+			glBindTexture(GL_TEXTURE_2D, 0u);
 		}
 		
-		err = glGetError();
-		s2d_assert(err == 0);
-		glBindTexture(GL_TEXTURE_2D, sprt->_texture->getTexture());
-		err = glGetError();
-		_bufferManager->draw();
-		//buf.draw();
-		err = glGetError();
-		s2d_assert(err == 0);
+		//err = glGetError();
+		//s2d_assert(err == 0);
+		//glBindTexture(GL_TEXTURE_2D, sprt->_texture->getTexture());
+		//err = glGetError();
+		//_bufferManager->draw();
+		////buf.draw();
+		//err = glGetError();
+		//s2d_assert(err == 0);
 
-		glBindTexture(GL_TEXTURE_2D, 0u);
-		//glActiveTexture(0);
-		_bufferManager->clear();
-		err = glGetError();
-		s2d_assert(err == 0);
+		//glBindTexture(GL_TEXTURE_2D, 0u);
+		////glActiveTexture(0);
+		//_bufferManager->clear();
+		//err = glGetError();
+		//s2d_assert(err == 0);
 		
 		it->first->use(false);
 	}
@@ -84,7 +88,7 @@ SpriteManager::SpriteManager(ShaderManager *shaderManager, BufferManager * bufMa
 }
 SpriteManager::~SpriteManager()
 {
-	for(std::map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
+	for(std::unordered_map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
 	{
 		(*it->second).sprites.clear();
 	}
@@ -98,7 +102,7 @@ Sprite * SpriteManager::createSprite(Sprite * sprite)
 		sprite = new Sprite();
 	sprites_buffer * bfr;
 	if(_sprites.size() != 0)
-		for(std::map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
+		for (std::unordered_map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
 		{
 			if(it->first == shdr) // Sprites with this shader already exist
 			{

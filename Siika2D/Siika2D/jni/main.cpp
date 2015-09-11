@@ -5,40 +5,20 @@
 #include "../engine/core/MemoryManager.h"
 core::Siika2D *siika = core::Siika2D::UI();
 
-bool stuffDone = false;
 std::vector<graphics::Sprite*>spriteVector;
 std::vector<audio::Audio*>audioVector;
 glm::vec2 position;
-graphics::Texture * tex;
+graphics::Texture * tex, *bg;
 graphics::Text * teksti;
 audio::Audio * scream;
 misc::Timer timer;
-float pos = 0;
-uint blue = 1;
-uint green = 128;
+float pos;
+uint blue;
+uint green;
 float orientation;
+
 void doStuff()
-{
-	if(!stuffDone)
-	{
-		timer.start();
-		tex = siika->_textureManager->createTexture("tekstuuri.png");
-		//siika->_shaderManager->useDefaultShader(true, true);
-		//siika->_shaderManager->useShader(true, true);
-		for (int i = 0; i < 50; i++)
-		{
-			spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(64, 64), glm::vec2(32,32), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
-		}
-		scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
-		scream->setMaxPlayerCount(10);
-		teksti = siika->_textManager->createText();
-		teksti->setFont("arial.ttf");
-		teksti->setText("hello siika");
-		teksti->setPosition(0, 0.5);
-		teksti->setFontSize(72);
-		stuffDone = true;
-	}
-	
+{	
 	std::vector<int> keys = siika->_input->getDownKeys();
 	
 	for (int i = 0; i < keys.size(); i++)
@@ -55,22 +35,21 @@ void doStuff()
 	for (int i = 0; i < siika->_input->sticksActive(); i++)
 	{
 		orientation = siika->_input->stick(i)._rotation;
-		if(orientation > 0)
-			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::UP);
-		else
-			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::DOWN);
-
 	}
 	
 	green += 2;
-	for (int i = 0; i < spriteVector.size(); i++)
-		spriteVector[i]->setColor(graphics::Color(0, green-i*10, blue-i*10, 255));
 
 	std::vector<GLint> downKeys = siika->_input->getDownKeys();
 	for (int i = 0; i < downKeys.size(); i++)
 	{
 		if (downKeys[i] == 100)
-			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::STOP);
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::UP);
+		if (downKeys[i] == 96)
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::DOWN);
+		if (downKeys[i] == 97)
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RIGHT);
+		if (downKeys[i] == 99)
+				siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::LEFT);
 		if (downKeys[i] == 107)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RESET);
 
@@ -87,7 +66,7 @@ void doStuff()
 		pos = -1.0;
 
 	for (int i = 0; i < spriteVector.size();i++)
-		spriteVector[i]->setPosition(glm::vec2(position.x+i, position.y+i*2));
+		spriteVector[i]->setPosition(glm::vec2(position.x+i*300, position.y));
 
 	for (int i = 0; i < spriteVector.size(); i++)
 	{
@@ -107,8 +86,36 @@ void doStuff()
 	//core::MemoryManager::getInstance().getCount();
 }
 
+void siika_init()
+{
+	timer.start();
+	
+	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");
+
+	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0));
+
+	tex = siika->_textureManager->createTexture("testi_siika.png");
+	for (int i = 0; i < 4; i++)
+	{
+		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
+	}
+
+	scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
+	scream->setMaxPlayerCount(10);
+	teksti = siika->_textManager->createText();
+	teksti->setFont("arial.ttf");
+	teksti->setText("SIIKA2D");
+	teksti->setPosition(-1.0, 0.75);
+	teksti->setFontSize(128);
+
+	pos = 0;
+	blue = 1;
+	green = 128;
+
+	siika->_graphicsContext->setClearColor(graphics::Color(38, 178, 170, 255));
+}
+
 void siika_main()
 {
 	doStuff();
-
 }

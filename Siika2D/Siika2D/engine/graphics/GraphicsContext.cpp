@@ -51,6 +51,8 @@ void GraphicsContext::initializeContext(android_app* app)
 		EGL_BLUE_SIZE, 8,
 		EGL_GREEN_SIZE, 8,
 		EGL_RED_SIZE, 8,
+		EGL_ALPHA_MASK_SIZE, 8,
+		EGL_ALPHA_SIZE, 8,
 		EGL_NONE
 	};
 
@@ -99,12 +101,13 @@ void GraphicsContext::initializeContext(android_app* app)
 	s2d_assert(result == EGL_TRUE);
 	
 
-	glClearColor(0, 1, 0, 1);
+	glClearColor(1, 1, 1, 1);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
-
 }
 
 void GraphicsContext::swap()
@@ -115,6 +118,12 @@ void GraphicsContext::swap()
 void GraphicsContext::clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void GraphicsContext::setClearColor(Color clearColor)
+{
+	glm::vec4 clearColorGL = clearColor.getGLColor();
+	glClearColor(clearColorGL.r, clearColorGL.g, clearColorGL.b, clearColorGL.a);
 }
 
 glm::vec2 GraphicsContext::getDisplaySize()

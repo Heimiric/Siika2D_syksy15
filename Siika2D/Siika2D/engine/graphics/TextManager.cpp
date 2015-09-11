@@ -11,8 +11,6 @@ TextManager::TextManager(core::ResourceManager* resourceManager, ShaderManager* 
 
 	_textShader = createShaders();
 	_program = _textShader->getProgram();
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	initFreetype();
 }
