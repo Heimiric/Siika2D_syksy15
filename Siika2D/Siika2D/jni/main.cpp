@@ -10,7 +10,7 @@ std::vector<audio::Audio*>audioVector;
 glm::vec2 position;
 graphics::Texture * tex, *bg;
 graphics::Text * teksti;
-audio::Audio * scream;
+audio::Audio * scream, *music;
 misc::Timer timer;
 float pos;
 uint blue;
@@ -102,6 +102,8 @@ void siika_init()
 
 	scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
 	scream->setMaxPlayerCount(10);
+	music = siika->_audioManager->createAudio("siika.ogg");
+	music->setLooping(true);
 	teksti = siika->_textManager->createText();
 	teksti->setFont("arial.ttf");
 	teksti->setText("SIIKA2D");
@@ -112,7 +114,10 @@ void siika_init()
 	blue = 1;
 	green = 128;
 
+	siika->_camera->setSpeed(4);
+
 	siika->_graphicsContext->setClearColor(graphics::Color(38, 178, 170, 255));
+	music->play();
 }
 
 void siika_main()
