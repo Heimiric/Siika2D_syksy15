@@ -35,6 +35,14 @@ namespace graphics
 		For example 0.2 0.2 would create 5x5 sprite sheet
 		*/
 		Sprite * createSprite(glm::vec2 location, glm::vec2 spriteSize, glm::vec2 spriteOrigin, Texture * texture, glm::vec2 textureUL, glm::vec2 textureLR);
+		/**
+			Creates sprite with the given texture.
+			Sets location to 0,0
+			Sets spriteSize to match the texture's size
+			Sets origin to 0,0
+			Sets texture bounds to the full texture
+		*/
+		Sprite * createSprite(Texture * texture);
 		Sprite * createSprite(Sprite * sprite);
 		///Draws all created sprites
 		void drawSprites();

@@ -124,6 +124,13 @@ Sprite * SpriteManager::createSprite(glm::vec2 location, glm::vec2 spriteSize, g
 	return sprt;
 }
 
+Sprite * SpriteManager::createSprite(Texture * texture)
+{
+	Sprite * sprt = new Sprite(glm::vec2(0.f, 0.f), texture->getSize() , glm::vec2(0.f, 0.f), texture, glm::vec2(0.f,0.f), glm::vec2(1.f, 1.f));
+	createSprite(sprt);
+	return sprt;
+}
+
 /*
 SpriteManager::~SpriteManager()
 {

@@ -27,6 +27,14 @@ namespace graphics
 			*/
 		GLuint getTexture();
 
+		/**
+			Returns the size of the texture.
+		*/
+		glm::vec2 getSize()
+		{
+			return glm::vec2(_width, _height);
+		}
+
 	private:
 		int _width, _height;
 		GLuint _texture;

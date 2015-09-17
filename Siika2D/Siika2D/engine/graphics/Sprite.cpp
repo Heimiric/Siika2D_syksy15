@@ -68,12 +68,7 @@ void Sprite::rotate()
 	//_rotationAngle = -glm::radians(_rotationAngle);
 
 	glm::mat4 rotationMatrix = glm::rotate(glm::radians(_rotationAngle), glm::vec3(0, 0, 1));
-		/*
-		glm::mat4(glm::cos(_rotationAngle), glm::sin(_rotationAngle), 0.f, 0.f,
-		-glm::sin(_rotationAngle), glm::cos(_rotationAngle), 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		0.f, 0.f, 0.f, 1.f);
-		*/
+
 	glm::vec2 difference;
 	float x, y;
 	for (int i = 0; i < 4; i++)
@@ -107,7 +102,7 @@ void Sprite::step()
 
 
 	//Needs to change horizontal position
-	if((_textureLR.x + width) < 1.0f)
+	if((_textureLR.x + width) <= 1.0f)
 	{
 		_textureUL.x += width;
 		_textureLR.x += width;
@@ -115,23 +110,18 @@ void Sprite::step()
 	}
 	else
 	{
-		//_textureUL.y = 0;
-		//_textureUL.x = 0;
-		//_textureLR.y = height;
-		//_textureLR.x = width;
-		
 		//Needs to change vertical position
-		if(_textureLR.y + height < 1.0f)
+		if(_textureLR.y + height <= 1.0f)
 		{
-			_textureUL.y += height;
-			_textureUL.x = 0;
-			_textureLR.y += height*2;
+			_textureUL.y = _textureUL.y + height;
+			_textureUL.x = 0.0f;
+			_textureLR.y += height;
 			_textureLR.x = width;
 		}
 		else//Go to first frame
 		{
-			_textureUL.y = 0;
-			_textureUL.x = 0;
+			_textureUL.y = 0.0f;
+			_textureUL.x = 0.0f;
 			_textureLR.y = height;
 			_textureLR.x = width;
 		}

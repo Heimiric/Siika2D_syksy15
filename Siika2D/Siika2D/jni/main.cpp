@@ -3,12 +3,16 @@
 #include "../engine/audio/Audio.h"
 #include "../engine/misc/timer.h"
 #include "../engine/core/MemoryManager.h"
+#include "../engine/misc/GameObject.h"
+
 core::Siika2D *siika = core::Siika2D::UI();
 
 std::vector<graphics::Sprite*>spriteVector;
+graphics::Sprite * sheetSprite;
+misc::GameObject go;
 std::vector<audio::Audio*>audioVector;
 glm::vec2 position;
-graphics::Texture * tex, *bg;
+graphics::Texture * tex, *bg, *sheet;
 graphics::Text * teksti;
 audio::Audio * scream, *music;
 misc::Timer timer;
@@ -32,9 +36,15 @@ void doStuff()
 		scream->play();
 	}
 
+	if (timer.getElapsedTime(TIME::SECONDS) > 2)
+	{
+		sheetSprite->step();
+	}
+
 	for (int i = 0; i < siika->_input->sticksActive(); i++)
 	{
 		orientation = siika->_input->stick(i)._rotation;
+
 	}
 	
 	green += 2;
@@ -43,7 +53,10 @@ void doStuff()
 	for (int i = 0; i < downKeys.size(); i++)
 	{
 		if (downKeys[i] == 100)
+		{
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::UP);
+			go.getComponent<misc::TransformComponent>()->move(glm::vec2(0, 10));
+		}
 		if (downKeys[i] == 96)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::DOWN);
 		if (downKeys[i] == 97)
@@ -71,15 +84,11 @@ void doStuff()
 	for (int i = 0; i < spriteVector.size(); i++)
 	{
 		spriteVector[i]->setRotation(orientation);
-		if (timer.getElapsedTime(TIME::SECONDS) > 2)
-		{
-			spriteVector[i]->step();
-			
-		}
 	}
 	if (timer.getElapsedTime(TIME::SECONDS) > 2)
 		timer.reset();
 	siika->_graphicsContext->clear(); // EBIN XD
+	go.update();
 	siika->_spriteManager->drawSprites();
 	siika->_textManager->drawTexts();
 	siika->_graphicsContext->swap();
@@ -93,13 +102,24 @@ void siika_init()
 	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");
 
 	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0));
-
+	sheet = siika->_textureManager->createTexture("testi_tekstuuri.png");
+	
 	tex = siika->_textureManager->createTexture("testi_siika.png");
+
+	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0))));
+	misc::TransformComponent* transComp = new misc::TransformComponent();
+	transComp->setPosition(glm::vec2(640, 0));
+
+	go.addComponent(transComp);
+	go.addComponent(sprtComp);
+
 	for (int i = 0; i < 4; i++)
 	{
 		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	}
-
+	
+	sheetSprite = siika->_spriteManager->createSprite(glm::vec2(100, 200), glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5));
+	
 	scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
 	scream->setMaxPlayerCount(10);
 	music = siika->_audioManager->createAudio("siika.ogg");

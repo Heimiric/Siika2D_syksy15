@@ -47,12 +47,6 @@ void GraphicsContext::initializeContext(android_app* app)
 	s2d_info("INITING GRAPHICS CONTEXT");
 	//Setting the color buffers' sizes etc.
 	const EGLint configAttribs[] = {
-		EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-		EGL_BLUE_SIZE, 8,
-		EGL_GREEN_SIZE, 8,
-		EGL_RED_SIZE, 8,
-		EGL_ALPHA_MASK_SIZE, 8,
-		EGL_ALPHA_SIZE, 8,
 		EGL_NONE
 	};
 
@@ -62,7 +56,7 @@ void GraphicsContext::initializeContext(android_app* app)
 		EGL_NONE
 	};
 
-	bool result;
+	EGLBoolean result;
 
 	//This gets us the display of the android device
 	_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -73,11 +67,11 @@ void GraphicsContext::initializeContext(android_app* app)
 	//This initializes the display we just got
 	result = eglInitialize(_display, 0, 0);
 	s2d_assert(result == EGL_TRUE);
-
+	GLint err = glGetError();
 	//This sets the configurations for the display
 	result = eglChooseConfig(_display, configAttribs, &_config, 1, &_numConfig);
 	s2d_assert(result == EGL_TRUE);
-
+ 
 	result = eglGetConfigAttrib(_display, _config, EGL_NATIVE_VISUAL_ID, &_format);
 	s2d_assert(result == EGL_TRUE);
 
