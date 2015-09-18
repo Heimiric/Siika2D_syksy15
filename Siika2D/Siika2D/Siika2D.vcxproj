@@ -104,7 +104,7 @@
     <ClCompile>
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
       <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\Siika2D\inc\freetype\include;$(SolutionDir)\Siika2D\inc\Box2D</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
     <ClCompile>
       <CppLanguageStandard>gnu++11</CppLanguageStandard>
       <PreprocessorDefinitions>DISABLE_IMPORTGL</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\freetype\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\include;$(SolutionDir)\Siika2D\inc\lodepng;$(SolutionDir)\Siika2D\inc\glm;$(SolutionDir)\Siika2D\inc\freetype\include;$(SolutionDir)\Siika2D\inc\Box2D</AdditionalIncludeDirectories>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
