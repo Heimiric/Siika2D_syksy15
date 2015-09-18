@@ -78,7 +78,7 @@ void SpriteManager::drawSprites()
 }
 Sprite * SpriteManager::createSprite()
 {
-	return createSprite(nullptr);
+	return createSprite((Sprite*)nullptr);
 }
 SpriteManager::SpriteManager(ShaderManager *shaderManager, BufferManager * bufMan)
 {

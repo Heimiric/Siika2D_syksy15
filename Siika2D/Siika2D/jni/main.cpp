@@ -2,7 +2,6 @@
 #include "..\engine\core\Siika2D.h"
 #include "../engine/audio/Audio.h"
 #include "../engine/misc/timer.h"
-#include "../engine/core/MemoryManager.h"
 #include "../engine/misc/GameObject.h"
 
 core::Siika2D *siika = core::Siika2D::UI();
@@ -112,7 +111,7 @@ void siika_init()
 
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
-
+	
 	for (int i = 0; i < 4; i++)
 	{
 		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
