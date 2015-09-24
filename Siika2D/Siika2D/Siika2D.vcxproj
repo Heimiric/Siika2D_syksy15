@@ -108,7 +108,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
+      <AdditionalDependencies>android;EGL;GLESv2;freetype;Box2D;OpenSLES</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\lib\x86;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -120,7 +120,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>android;EGL;GLESv2;freetype;OpenSLES</AdditionalDependencies>
+      <AdditionalDependencies>android;EGL;GLESv2;freetype;Box2D;OpenSLES</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Siika2D\inc\SDL2-2.0.3\lib\x86;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>

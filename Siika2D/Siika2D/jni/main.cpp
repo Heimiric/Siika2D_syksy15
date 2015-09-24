@@ -1,8 +1,9 @@
 
-#include "..\engine\core\Siika2D.h"
+#include "../engine/core/Siika2D.h"
 #include "../engine/audio/Audio.h"
 #include "../engine/misc/timer.h"
 #include "../engine/misc/GameObject.h"
+#include <Box2D/Box2D.h>
 
 core::Siika2D *siika = core::Siika2D::UI();
 
@@ -20,6 +21,11 @@ uint blue;
 uint green;
 float orientation;
 
+b2World boxWorld(b2Vec2(0.f, -5.f));
+b2BodyDef siikaBodyDef;
+b2Body* siikaBody;
+b2Body* groundBody;
+
 void doStuff()
 {	
 	std::vector<int> keys = siika->_input->getDownKeys();
@@ -28,6 +34,7 @@ void doStuff()
 	{
 		s2d_info("%i",keys[i]);
 	}
+
 
 	for (int i = 0; i < siika->_input->touchPositionsActive(); i++)
 	{
@@ -45,7 +52,7 @@ void doStuff()
 		orientation = siika->_input->stick(i)._rotation;
 
 	}
-	
+
 	green += 2;
 
 	std::vector<GLint> downKeys = siika->_input->getDownKeys();
@@ -54,7 +61,7 @@ void doStuff()
 		if (downKeys[i] == 100)
 		{
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::UP);
-			go.getComponent<misc::TransformComponent>()->move(glm::vec2(0, 10));
+			go.getComponent<misc::TransformComponent>()->move(glm::vec2(0, -40));
 		}
 		if (downKeys[i] == 96)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::DOWN);
@@ -66,6 +73,14 @@ void doStuff()
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RESET);
 
 	}
+
+	boxWorld.Step(1.f/60.f, 6, 2);
+	b2Vec2 siikaPos = siikaBody->GetPosition();
+	float32 siikaAngle = siikaBody->GetAngle();
+
+	go.getComponent<misc::TransformComponent>()->setPosition(glm::vec2(siikaPos.x*100, -siikaPos.y*100));
+	go.getComponent<misc::TransformComponent>()->setRotation(siikaAngle);
+
 	teksti->setColor(graphics::Color(0, green, blue, 255));
 
 	blue += 2;
@@ -107,7 +122,7 @@ void siika_init()
 
 	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0))));
 	misc::TransformComponent* transComp = new misc::TransformComponent();
-	transComp->setPosition(glm::vec2(640, 0));
+	transComp->setPosition(glm::vec2(640, -500));
 
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
@@ -133,9 +148,32 @@ void siika_init()
 	blue = 1;
 	green = 128;
 
-	siika->_camera->setSpeed(4);
+	siika->_camera->setSpeed(8);
 
 	siika->_graphicsContext->setClearColor(graphics::Color(38, 178, 170, 255));
+	b2BodyDef groundBodyDef;
+	groundBodyDef.position.Set(0.0f, -10.0f);
+	b2PolygonShape groundBox;
+	groundBox.SetAsBox(50.0f, 2.0f, b2Vec2(0.f, -2.f), 0.f);
+
+	groundBody = boxWorld.CreateBody(&groundBodyDef);
+	groundBody->CreateFixture(&groundBox, 0.0f);
+	siikaBodyDef.type = b2_dynamicBody;
+	siikaBodyDef.position.Set(6.4, 0.f);
+
+	siikaBody = boxWorld.CreateBody(&siikaBodyDef);
+
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(2.5f, 1.2f);
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 0.5f;
+	fixtureDef.restitution = 0.75f;
+
+	siikaBody->CreateFixture(&fixtureDef);
+
 	music->play();
 }
 
