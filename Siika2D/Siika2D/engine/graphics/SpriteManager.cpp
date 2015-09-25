@@ -1,5 +1,4 @@
 #include "SpriteManager.h"
-#
 using namespace graphics;
 
 
@@ -8,14 +7,18 @@ void SpriteManager::drawSprites()
 {
 	GLint err = glGetError();
 	s2d_assert(err == 0);
-
+	Texture * oldTexture = nullptr;
 	std::vector<GLfloat> vertices;
 	std::vector<GLint> indecis;
 	int spriteCount = 0;
-	//GLfloat vertices[16]; // Pos Tex
+	std::vector<Sprite*> spritesToRemove;
 
+	//GLfloat vertices[16]; // Pos Tex
+	//Goes through a list of shaders in use and sprites drawn with them / std::list<sprite>
 	for(std::unordered_map<Shader*, sprites_buffer*>::iterator it = _sprites.begin(); it != _sprites.end(); it++)
 	{
+		//needs to do spritebatch here
+		//batchSprites(*it->second);
 		GLint p = position, c = color, t = texture;
 		Shader * curShader = it->first;
 
@@ -41,23 +44,36 @@ void SpriteManager::drawSprites()
 
 		_bufferManager->setAttributes(p, c, t);
 		Sprite * sprt = *(*it->second).sprites.begin();
+		//Goes through all sprites drawn with a specific shader
 		for(std::vector<Sprite*>::iterator sit = (*it->second).sprites.begin(); sit != (*it->second).sprites.end(); sit++)
 		{
-			glm::vec2 * positions = (*sit)->getPositions();
-			glm::vec2 * textures = (*sit)->getTexturePos();
-			graphics::Color * col = (*sit)->getColor();
+			if(!(*sit)->_delete || !(*sit)->_draw)
+			{
+				glm::vec2 * positions = (*sit)->getPositions();
+				glm::vec2 * textures = (*sit)->getTexturePos();
+				graphics::Color * col = (*sit)->getColor();
+				(*sit)->getPositions();
+				if(c == unknown)
+					_bufferManager->addRectangle(positions, textures, nullptr);
+				else
+					_bufferManager->addRectangle(positions, textures, col);
 
-			if (c == unknown)
-				_bufferManager->addRectangle(positions, textures, nullptr);
+				//Pitää batchata / tarkistaa onko tekstuuri vaihtunut
+				if(oldTexture != (*sit)->_texture);
+					glBindTexture(GL_TEXTURE_2D, (*sit)->_texture->getTexture());
+				_bufferManager->draw(); //This needs to be elsewhere
+				_bufferManager->clear();
+			}
 			else
-				_bufferManager->addRectangle(positions, textures, col);
-		
-			glBindTexture(GL_TEXTURE_2D, (*sit)->_texture->getTexture());
-			_bufferManager->draw();
-			_bufferManager->clear();
-			glBindTexture(GL_TEXTURE_2D, 0u);
+			{
+				if((*sit)->_delete)
+					spritesToRemove.push_back((*sit));
+			}
+			
 		}
-		
+		//for(std::vector<sprite*>)
+		spritesToRemove.clear();
+		glBindTexture(GL_TEXTURE_2D, 0u);
 		//err = glGetError();
 		//s2d_assert(err == 0);
 		//glBindTexture(GL_TEXTURE_2D, sprt->_texture->getTexture());

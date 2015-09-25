@@ -16,8 +16,10 @@ namespace graphics
 	{
 		friend class SpriteManager;
 	public:
-
-		void setTexture(Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth){ _texture = TextureToSet; }
+		/**
+		Sets texture for sprite with given bounds
+		*/
+		void setTexture(Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth){ _texture = TextureToSet; _textureUL = textureUpperLeft; _textureLR = textureLowerRigth; }
 		void setPosition(glm::vec2 position);
 		void setSize(glm::vec2 size){ _size = size; }
 		void setOrigin(glm::vec2 origin){ _origin = origin; }
@@ -27,13 +29,29 @@ namespace graphics
 				_col = new Color(0,0,0,0);
 			_col->setRGBA(col.getR(), col.getG(), col.getB(), col.getA()); 
 		}
+		/**
+		Sets sprite rotation angle in degrees
+		*/
 		void setRotation(GLfloat angle){ _rotationAngle = angle; }
+		/**
+		Sets Z used for draw order 
+		*/
 		void setZ(int Z){ _posZ = Z; }
+		/**
+		Gets sprite position in given rotation
+		*/
 		const glm::vec2 * getPosition(){ return &_position; }
 		Color * getColor(){ return _col; };
-
-
-		///Gets next sprite in spritesheet will cycle trough and go back to first sprite
+		/**
+		False = sprite will not be drawn
+		*/
+		void setVisible(bool visible){ _draw = visible; }
+		/**
+		Gets next sprite in spritesheet will cycle trough and go back to first sprite
+		*/
+		void setDelete(bool toDelete){ _delete = toDelete; }
+		bool getVisible(){ return _draw; }
+		bool getToDelete(){ return _delete; }
 		void step();
 	protected:
 		Sprite(){};
@@ -54,7 +72,7 @@ namespace graphics
 
 		*/
 		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth) :
-			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0)
+			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0), _draw(true), _delete(false)
 		{
 			_col = new Color(0, 0, 0, 0);
 		};
@@ -77,7 +95,7 @@ namespace graphics
 		glm::vec2 _positions[4];
 		glm::vec2 _texPos[4];
 		Color * _col;
-		bool _draw;
+		bool _draw, _delete;
 		void moveSprite();
 	};
 }
