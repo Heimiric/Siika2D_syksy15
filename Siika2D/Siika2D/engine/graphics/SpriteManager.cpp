@@ -158,20 +158,59 @@ SpriteManager::~SpriteManager()
 }
 */
 
-bool SpriteManager::compareSpriteZs(Sprite &sprite1, Sprite &sprite2)
+bool SpriteManager::compareSpriteZs(Sprite *sprite1, Sprite *sprite2)
 {
-	if (sprite1._posZ > sprite2._posZ)
+	if (sprite1->_posZ > sprite2->_posZ)
 		return true;
 	else
 		return false;
 }
 
 
-void SpriteManager::spriteBatcher(std::vector<Sprite> *toBatch)
+void SpriteManager::spriteBatcher(std::vector<Sprite*> *toBatch)
 {
 	int i, j;
 	
+	auto sortZ = [](Sprite *s1, Sprite *s2)
+	{
+		if (s1->_posZ > s2->_posZ)
+			return true;
+		else
+			return false;
+	};
 
+	auto sortT = [](Sprite *s1, Sprite *s2)
+	{
+		if (s1->_texture->getTexture() > s1->_texture->getTexture())
+			return true;
+		else
+			return false;
+	};
+
+	std::sort(toBatch->begin(), toBatch->end(), sortZ);//Sort based on z vector
+
+	std::vector<int> zstart;
+	int tempzstart = 0;
+	int tempz = toBatch->at(0)->_posZ;
+
+	for (int i = 0; i < toBatch->size(); i++)//Get start + end of z ranges
+	{
+		if (tempz > toBatch->at(i)->_posZ)
+		{
+			zstart.push_back(tempzstart);
+			zstart.push_back(i - 1);
+
+			tempzstart = i;
+			tempz = toBatch->at(i)->_posZ;
+		}
+	}
+
+	for (int i = 0; i < zstart.size(); i+=2)//Sort based on texture
+	{
+		std::sort(toBatch->begin()+zstart.at(i), toBatch->begin() + zstart.at(i+1), sortT);
+	}
+	//
+	/*
 	for ( i = 0; i < toBatch->size(); i++)
 	{
 		for (j = i + 1; j < toBatch->size(); j++)
@@ -200,5 +239,5 @@ void SpriteManager::spriteBatcher(std::vector<Sprite> *toBatch)
 			}
 		}
 	}
-
+	*/
 }

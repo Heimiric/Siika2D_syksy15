@@ -56,17 +56,16 @@ namespace graphics
 		void batchSprites(std::vector<Sprite*> *toBatch){};
 		std::unordered_map<Shader*, sprites_buffer*> _sprites;
 		///Batches the given vector of sprites
-		void spriteBatcher(std::vector<Sprite> *toBatch);
+		void spriteBatcher(std::vector<Sprite*> *toBatch);
 		ShaderManager* _shaderManager;
 		//std::map<Shader*, sprites_buffer> _sprites;
 		/**
 		Compares Z position between 2 sprites from the 'sprites' vector
 		*/
-		bool compareSpriteZs(Sprite &sprite1, Sprite &sprite2);
+		bool compareSpriteZs(Sprite *sprite1, Sprite *sprite2);
 		/**
 		Sorts sprites vector by comparing Z positions and textures
 		*/
-		std::vector<Sprite> *toBatch;
 
 	};
 }
