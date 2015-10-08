@@ -12,9 +12,18 @@ GameObject::~GameObject()
 
 void GameObject::update()
 {
+	CoordTransform transf;
 	TransformComponent* transformComp = getComponent<TransformComponent>();
 	if (transformComp != nullptr)
 	{
+		PhysicsComponent* physicsComp = getComponent<PhysicsComponent>();
+		if (physicsComp != nullptr)
+		{
+			b2Vec2 pos = physicsComp->_body->GetPosition();
+			pos = transf.Box2dToPixels(pos);
+			transformComp->setPosition(glm::vec2(pos.x, -pos.y));
+			//transformComp->setPosition(glm::vec2(pos.x * 100, -pos.y * 100));
+		}
 		SpriteComponent* spriteComp = getComponent<SpriteComponent>();
 		if (spriteComp != nullptr)
 		{

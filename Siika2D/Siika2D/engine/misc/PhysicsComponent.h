@@ -39,12 +39,13 @@ namespace misc
 			_bDef.position.Set(_position.x, _position.y);
 			_shape.SetAsBox(_size.x, _size.y);
 
-			core::Siika2D::UI()->_boxWorld->CreateBody(&_bDef);
+			_body = core::Siika2D::UI()->_boxWorld->CreateBody(&_bDef);
 			//_world->CreateBody();
 			_fixtureDef.shape = &_shape;
 			_fixtureDef.density = _density;
 			_fixtureDef.friction = _friction;
 			_fixtureDef.restitution = _restitution;
+			
 			_body->CreateFixture(&_fixtureDef);
 		};
 		glm::vec2 _size, _position;

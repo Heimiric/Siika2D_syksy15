@@ -1,5 +1,6 @@
 #pragma once
 #include "glm.hpp"
+#include "Box2D\Box2D.h"
 namespace misc
 {
 	class CoordTransform
@@ -18,47 +19,42 @@ namespace misc
 			Transforms user coordinates to device coordinates
 			*/
 		//deviceCoordinate = userCoordinate / userDimensions * deviceDimensions
-		glm::vec2 userToDevice(glm::vec2 coordToTransform);
+		glm::vec2 userToDevice(glm::vec2 coordToTransform)
+		{
+			return coordToTransform / _userDimensions * _deviceDimensions;
+		}
 		/**
 			Transforms device coordinates to user coordinates
 			*/
 		//userCoordinate = deviceCoordinate / deviceDimensions * userDimensions
-		glm::vec2 deviceToUser(glm::vec2 coordToTransform);
+		glm::vec2 deviceToUser(glm::vec2 coordToTransform)
+		{
+			return coordToTransform / _deviceDimensions * _userDimensions;
+		}
 
 		/**
 		Transforms pixels to box2d meters
 		*/
 		//pixels = pixels/pixelsPerMeter 
-		glm::vec2 pixelsToBox2d(glm::vec2 coordToTransform);
+		glm::vec2 pixelsToBox2d(glm::vec2 coordToTransform)
+		{
+			return coordToTransform /= _pixelsPerMeter;
+		}
 		/**
 		Transforms box2d meters to Pixels
 		*/
 		//pixels = meters * pixelsPerMeter 
-		glm::vec2 Box2dToPixels(glm::vec2 coordToTransform);
+		glm::vec2 Box2dToPixels(glm::vec2 coordToTransform)
+		{
+			return coordToTransform *= _pixelsPerMeter;
+		}
+		b2Vec2 Box2dToPixels(b2Vec2 coordToTransform)
+		{
+			return b2Vec2(coordToTransform.x * _pixelsPerMeter, coordToTransform.y * _pixelsPerMeter);
+		}
 	private:
 		glm::vec2 _deviceDimensions;
 		glm::vec2 _userDimensions;
 		int _pixelsPerMeter;
 	};
-
-	glm::vec2 CoordTransform::userToDevice(glm::vec2 coordToTransform)
-	{
-		return coordToTransform / _userDimensions * _deviceDimensions;
-	}
-
-	glm::vec2 CoordTransform::deviceToUser(glm::vec2 coordToTransform)
-	{
-		return coordToTransform / _deviceDimensions * _userDimensions;
-	}
-
-	glm::vec2 CoordTransform::pixelsToBox2d(glm::vec2 coordToTransform)
-	{
-		return coordToTransform *= _pixelsPerMeter;
-	}
-
-	glm::vec2 CoordTransform::Box2dToPixels(glm::vec2 coordToTransform)
-	{
-		return coordToTransform /= _pixelsPerMeter;
-	}
-
 }

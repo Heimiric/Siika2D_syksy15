@@ -19,7 +19,9 @@ Siika2D* Siika2D::UI()
 
 Siika2D::Siika2D()
 {
+	
 	s2d_info("SIIKA CREATED");
+	_boxWorld = new b2World(b2Vec2(0.f, -5.f));
 	_input = nullptr;
 	_graphicsContext = nullptr;
 	_camera = nullptr;
@@ -45,6 +47,7 @@ Siika2D::~Siika2D()
 	delete _shaderManager;
 	delete _textManager;
 	delete _audioManager;
+	delete _boxWorld;
 }
 
 void Siika2D::initialize(android_app* app)

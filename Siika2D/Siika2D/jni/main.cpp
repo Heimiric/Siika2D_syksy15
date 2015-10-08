@@ -21,18 +21,18 @@ uint blue;
 uint green;
 float orientation;
 
-b2World boxWorld(b2Vec2(0.f, -5.f));
+//b2World boxWorld(b2Vec2(0.f, -5.f));
 b2BodyDef siikaBodyDef;
 b2Body* siikaBody;
 b2Body* groundBody;
 
 void doStuff()
-{	
+{
 	std::vector<int> keys = siika->_input->getDownKeys();
-	
+
 	for (int i = 0; i < keys.size(); i++)
 	{
-		s2d_info("%i",keys[i]);
+		s2d_info("%i", keys[i]);
 	}
 
 
@@ -68,32 +68,39 @@ void doStuff()
 		if (downKeys[i] == 97)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RIGHT);
 		if (downKeys[i] == 99)
-				siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::LEFT);
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::LEFT);
 		if (downKeys[i] == 107)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RESET);
 
 	}
 
-	boxWorld.Step(1.f/60.f, 6, 2);
-	b2Vec2 siikaPos = siikaBody->GetPosition();
-	float32 siikaAngle = siikaBody->GetAngle();
+	siika->_boxWorld->Step(1.f/60.f, 6, 2);
+	b2Vec2 siikaPos;
+	siikaPos = go.getComponent<misc::PhysicsComponent>()->_body->GetPosition();
+	//go.update();
+	//siika->_boxWorld = &boxWorld;
 
-	go.getComponent<misc::TransformComponent>()->setPosition(glm::vec2(siikaPos.x*100, -siikaPos.y*100));
-	go.getComponent<misc::TransformComponent>()->setRotation(siikaAngle);
+	//boxWorld.Step(1.f / 60.f, 6, 2);
+	//siikaPos = siikaBody->GetPosition();
+	//float32 siikaAngle = siikaBody->GetAngle();
+	//go.getComponent<misc::TransformComponent>()->setRotation(siikaAngle);
 
+	//siikaPos = go.getComponent<misc::PhysicsComponent>()->_body->GetPosition();
+	//go.getComponent<misc::TransformComponent>()->setPosition(glm::vec2(siikaPos.x * 100, -siikaPos.y * 100));
+	
 	teksti->setColor(graphics::Color(0, green, blue, 255));
 
 	blue += 2;
-	if(blue > 254)
+	if (blue > 254)
 		blue = 0;
-	if(green > 252)
+	if (green > 252)
 		green = 0;
 	pos = pos + 0.01;
-	if(pos > 1.0f)
+	if (pos > 1.0f)
 		pos = -1.0;
 
-	for (int i = 0; i < spriteVector.size();i++)
-		spriteVector[i]->setPosition(glm::vec2(position.x+i*300, position.y));
+	for (int i = 0; i < spriteVector.size(); i++)
+		spriteVector[i]->setPosition(glm::vec2(position.x + i * 300, position.y));
 
 	for (int i = 0; i < spriteVector.size(); i++)
 	{
@@ -112,28 +119,30 @@ void doStuff()
 void siika_init()
 {
 	timer.start();
-	
+
 	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");
 
 	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0));
 	sheet = siika->_textureManager->createTexture("testi_tekstuuri.png");
-	
+
 	tex = siika->_textureManager->createTexture("testi_siika.png");
 
-	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0))));
+	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	misc::TransformComponent* transComp = new misc::TransformComponent();
-	transComp->setPosition(glm::vec2(640, -500));
+	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(2.5, 1.2), 1, 1, 0.5);
+	transComp->setPosition(glm::vec2(640, 100));
 
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
-	
+	go.addComponent(physicsComp);
+
 	for (int i = 0; i < 4; i++)
 	{
 		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	}
-	
+
 	sheetSprite = siika->_spriteManager->createSprite(glm::vec2(100, 200), glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5));
-	
+
 	scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
 	scream->setMaxPlayerCount(10);
 	music = siika->_audioManager->createAudio("siika.ogg");
@@ -156,13 +165,14 @@ void siika_init()
 	b2PolygonShape groundBox;
 	groundBox.SetAsBox(50.0f, 2.0f, b2Vec2(0.f, -2.f), 0.f);
 
-	groundBody = boxWorld.CreateBody(&groundBodyDef);
-	groundBody->CreateFixture(&groundBox, 0.0f);
+	groundBody = siika->_boxWorld->CreateBody(&groundBodyDef);
+	//groundBody = boxWorld.CreateBody(&groundBodyDef);
+	groundBody->CreateFixture(&groundBox, 0.0f);
+
+	/*/Old physics
 	siikaBodyDef.type = b2_dynamicBody;
 	siikaBodyDef.position.Set(6.4, 0.f);
-
 	siikaBody = boxWorld.CreateBody(&siikaBodyDef);
-
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(2.5f, 1.2f);
 
@@ -170,10 +180,10 @@ void siika_init()
 	fixtureDef.shape = &dynamicBox;
 	fixtureDef.density = 1.f;
 	fixtureDef.friction = 0.5f;
-	fixtureDef.restitution = 0.75f;
+	fixtureDef.restitution = 1.0f;
 
 	siikaBody->CreateFixture(&fixtureDef);
-
+	*/
 	music->play();
 }
 

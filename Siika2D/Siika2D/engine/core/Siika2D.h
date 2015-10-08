@@ -8,7 +8,7 @@
 #include "../graphics/GraphicsContext.h"
 #include "../audio/AudioManager.h"
 #include "../graphics/Camera.h"
-
+#include "Box2D\Box2D.h"
 #include <android/sensor.h>
 #include "../misc/Input.h"
 //#include "..\core\MemoryManager.h"
@@ -56,7 +56,7 @@ namespace core
 		graphics::GraphicsContext *_graphicsContext;
 		graphics::Camera *_camera;
 		audio::AudioManager* _audioManager;
-
+		b2World * _boxWorld;
 	protected:
 		virtual ~Siika2D();
 		Siika2D();
