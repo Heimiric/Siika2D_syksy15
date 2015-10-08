@@ -14,6 +14,7 @@ namespace graphics
 		*/
 	class Texture
 	{
+		friend class TextureManager;
 	public:
 		/**
 			Constructor.

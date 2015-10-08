@@ -27,3 +27,12 @@ Texture* TextureManager::createTexture(std::string filename)
 		return &_createdTextures.at(filename);
 	}
 }
+
+void TextureManager::InitializeTextures()
+{
+	std::map<std::string, Texture>::iterator it = _createdTextures.begin();
+	for (it; it != _createdTextures.end(); it++)
+	{
+		it->second.initialize();
+	}
+}

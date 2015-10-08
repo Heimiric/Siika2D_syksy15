@@ -34,6 +34,7 @@ namespace graphics
 		Texture* createTexture(std::string filename);
 
 	private:
+		void InitializeTextures();
 		core::ResourceManager* _resourceManager;
 		std::map<std::string, Texture> _createdTextures;
 	};

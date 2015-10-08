@@ -85,3 +85,12 @@ void ShaderManager::initializeProjection()
 	glUniformMatrix4fv(_currentShader->_projectionLocation, 1, GL_FALSE, reinterpret_cast<const float*>(&proj));
 	_currentShader->use(false);*/
 }
+
+void ShaderManager::ReinitializeShaders()
+{
+	for (unsigned int i = 0; i < _shaders.size(); i++)
+	{
+		_shaders[i]->compileShaders();
+		_shaders[i]->linkProgram();
+	}
+}

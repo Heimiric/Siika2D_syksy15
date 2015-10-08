@@ -72,6 +72,8 @@ namespace graphics
 		~ShaderManager(){ _shaders.empty(); }
 		//Finds already created shader in _shaders
 		Shader * findShader(const char * vertSource, const char * fragSource);
+		//Reinitializes shaders
+		void ReinitializeShaders();
 
 		Camera * _camera;
 		int _defaultIndx;
