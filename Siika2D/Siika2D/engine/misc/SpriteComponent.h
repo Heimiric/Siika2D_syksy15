@@ -26,6 +26,13 @@ namespace misc
 		{
 			return _sprite;
 		}
+		/**
+			Sets draw order higher is on front
+		*/
+		void setZ(int z)
+		{
+			_sprite->setZ(z);
+		}
 
 	private:
 		graphics::Sprite* _sprite;

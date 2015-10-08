@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "SpriteComponent.h"
 #include "TransformComponent.h"
+#include "PhysicsComponent.h"
 
 namespace misc
 {
