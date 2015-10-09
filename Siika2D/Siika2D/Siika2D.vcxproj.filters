@@ -221,5 +221,11 @@
     <ClInclude Include="engine\misc\TransformComponent.h">
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
+    <ClInclude Include="engine\misc\CoordTransform.h">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\misc\ColListener.h">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

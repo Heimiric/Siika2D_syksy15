@@ -76,9 +76,11 @@
     <ClInclude Include="engine\graphics\TextureManager.h" />
     <ClInclude Include="engine\misc\Color.h" />
     <ClInclude Include="engine\misc\Component.h" />
+    <ClInclude Include="engine\misc\CoordTransform.h" />
     <ClInclude Include="engine\misc\GameObject.h" />
     <ClInclude Include="engine\misc\Input.h" />
     <ClInclude Include="engine\misc\SpriteComponent.h" />
+    <ClInclude Include="engine\misc\ColListener.h" />
     <ClInclude Include="engine\misc\Timer.h" />
     <ClInclude Include="engine\misc\TransformComponent.h" />
     <ClInclude Include="inc\lodepng\lodepng.h" />

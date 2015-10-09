@@ -4,7 +4,6 @@
 #include "../engine/misc/timer.h"
 #include "../engine/misc/GameObject.h"
 #include <Box2D/Box2D.h>
-
 core::Siika2D *siika = core::Siika2D::UI();
 
 std::vector<graphics::Sprite*>spriteVector;
@@ -26,6 +25,7 @@ b2BodyDef siikaBodyDef;
 b2Body* siikaBody;
 b2Body* groundBody;
 
+colListener collisionListener;
 void doStuff()
 {
 	std::vector<int> keys = siika->_input->getDownKeys();
@@ -120,6 +120,7 @@ void doStuff()
 
 void siika_init()
 {
+	siika->_boxWorld->SetContactListener(&collisionListener);
 	timer.start();
 
 	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");

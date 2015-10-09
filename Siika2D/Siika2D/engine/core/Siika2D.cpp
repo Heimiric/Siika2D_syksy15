@@ -22,7 +22,7 @@ Siika2D::Siika2D()
 	
 	s2d_info("SIIKA CREATED");
 	_boxWorld = new b2World(b2Vec2(0.f, -5.f));
-	_boxWorld->SetContactListener(&_collisionListener);
+	//_boxWorld->SetContactListener(&_collisionListener);
 	_coordTransf = nullptr;
 	_input = nullptr;
 	_graphicsContext = nullptr;

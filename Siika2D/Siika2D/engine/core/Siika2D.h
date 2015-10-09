@@ -11,8 +11,8 @@
 #include "Box2D\Box2D.h"
 #include <android/sensor.h>
 #include "../misc/Input.h"
-#include "../misc/CollisionListener.h"
 #include "../misc/CoordTransform.h"
+#include "../misc/ColListener.h"
 
 //#include "..\core\MemoryManager.h"
 
@@ -60,7 +60,7 @@ namespace core
 		graphics::Camera *_camera;
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
-		misc::collisionListener _collisionListener;
+		//misc::collisionListener _collisionListener;
 		misc::CoordTransform* transfCrds(){return _coordTransf;}
 	protected:
 		virtual ~Siika2D();
