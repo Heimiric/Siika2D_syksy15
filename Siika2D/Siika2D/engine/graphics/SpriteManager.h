@@ -29,7 +29,7 @@ namespace graphics
 	public:
 		SpriteManager(ShaderManager *shaderManager, BufferManager * bufMan);
 		~SpriteManager();
-		Sprite * createSprite();
+		//Sprite * createSprite();
 		/**Creates sprite with given parameters
 		To use spritesheet use texture limits lower than 1
 		For example 0.2 0.2 would create 5x5 sprite sheet
@@ -54,7 +54,8 @@ namespace graphics
 		};
 		BufferManager * _bufferManager;
 		void batchSprites(std::vector<Sprite*> *toBatch){};
-		std::unordered_map<Shader*, sprites_buffer*> _sprites;
+		std::vector<Sprite*>_sprites;
+		//std::unordered_map<Shader*, sprites_buffer*> _sprites;
 		///Batches the given vector of sprites
 		void spriteBatcher(std::vector<Sprite*> *toBatch);
 		ShaderManager* _shaderManager;

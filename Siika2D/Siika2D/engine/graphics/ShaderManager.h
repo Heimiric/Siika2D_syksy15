@@ -18,7 +18,7 @@ namespace core
 
 namespace graphics
 {
-
+	
 	class ShaderManager
 	{
 		/***
@@ -38,7 +38,7 @@ namespace graphics
 		*/
 
 		friend class core::Siika2D;
-
+		friend class SpriteManager;
 	public:
 		
 

@@ -4,6 +4,7 @@
 #include "glm.hpp"
 #include "..\misc\color.h"
 #include <gtx/transform.hpp>
+#include "Shader.h"
 
 namespace graphics
 {
@@ -55,8 +56,8 @@ namespace graphics
 		void step();
 	protected:
 		Sprite(){};
-		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin) :
-			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0)
+		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Shader * shader) :
+			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0), _shader(shader)
 		{
 			_col = new Color(0, 0, 0, 0);
 		};
@@ -71,8 +72,8 @@ namespace graphics
 		use sprite::step() to move to next frame
 
 		*/
-		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth) :
-			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0), _draw(true), _delete(false)
+		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth, Shader * shader) :
+			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0), _draw(true), _delete(false), _shader(shader)
 		{
 			_col = new Color(0, 0, 0, 0);
 		};
@@ -95,6 +96,7 @@ namespace graphics
 		glm::vec2 _positions[4];
 		glm::vec2 _texPos[4];
 		Color * _col;
+		Shader * _shader;
 		bool _draw, _delete;
 		void moveSprite();
 	};
