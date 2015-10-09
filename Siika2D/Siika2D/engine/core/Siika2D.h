@@ -12,6 +12,7 @@
 #include <android/sensor.h>
 #include "../misc/Input.h"
 #include "../misc/CollisionListener.h"
+#include "../misc/CoordTransform.h"
 
 //#include "..\core\MemoryManager.h"
 
@@ -37,19 +38,19 @@ namespace core
 
 		/**
 			Pointter to the UI
-		*/
+			*/
 		static Siika2D* UI();
 
-		saved_state* _savedState;	
+		saved_state* _savedState;
 
 		/**
 			Tells when graphics has been initialized
-		*/
+			*/
 		bool drawReady()
 		{
 			return _drawReady;
 		}
-
+		b2World* getB2World(){ return _boxWorld; }
 		misc::Input *_input;
 		graphics::ShaderManager *_shaderManager;
 		graphics::SpriteManager *_spriteManager;
@@ -60,13 +61,14 @@ namespace core
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
 		misc::collisionListener _collisionListener;
+		misc::CoordTransform* transfCrds(){return _coordTransf;}
 	protected:
 		virtual ~Siika2D();
 		Siika2D();
 		Siika2D(const Siika2D& s2d);
 		Siika2D& operator=(const Siika2D& s2d);
 		static Siika2D* _instance;
-
+		misc::CoordTransform * _coordTransf;
 	
 		graphics::BufferManager *_bufferManager;
 		core::ResourceManager _resourceManager;

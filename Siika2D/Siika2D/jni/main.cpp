@@ -77,14 +77,16 @@ void doStuff()
 	siika->_boxWorld->Step(1.f/60.f, 6, 2);
 	b2Vec2 siikaPos;
 	siikaPos = go.getComponent<misc::PhysicsComponent>()->_body->GetPosition();
+	misc::CoordTransform * trnsf = siika->transfCrds();
+	glm::vec2 positionInPixels = trnsf->Box2dToPixels(glm::vec2(siikaPos.x, siikaPos.y));
+	//glm::vec2 positionInPixels = siika->transfCrds()->Box2dToPixels(glm::vec2(siikaPos.x, siikaPos.y));
+
 	//go.update();
 	//siika->_boxWorld = &boxWorld;
-
 	//boxWorld.Step(1.f / 60.f, 6, 2);
 	//siikaPos = siikaBody->GetPosition();
 	//float32 siikaAngle = siikaBody->GetAngle();
 	//go.getComponent<misc::TransformComponent>()->setRotation(siikaAngle);
-
 	//siikaPos = go.getComponent<misc::PhysicsComponent>()->_body->GetPosition();
 	//go.getComponent<misc::TransformComponent>()->setPosition(glm::vec2(siikaPos.x * 100, -siikaPos.y * 100));
 	
@@ -108,7 +110,7 @@ void doStuff()
 	}
 	if (timer.getElapsedTime(TIME::SECONDS) > 2)
 		timer.reset();
-	siika->_graphicsContext->clear(); // EBIN XD
+	siika->_graphicsContext->clear(); 
 	go.update();
 	siika->_spriteManager->drawSprites();
 	siika->_textManager->drawTexts();

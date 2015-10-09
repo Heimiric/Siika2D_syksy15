@@ -42,6 +42,7 @@
     <ClCompile Include="engine\misc\Color.cpp" />
     <ClCompile Include="engine\misc\GameObject.cpp" />
     <ClCompile Include="engine\misc\Input.cpp" />
+    <ClCompile Include="engine\misc\PhysicsComponent.cpp" />
     <ClCompile Include="engine\misc\Timer.cpp" />
     <ClCompile Include="engine\misc\TransformComponent.cpp" />
     <ClCompile Include="inc\lodepng\lodepng.cpp" />

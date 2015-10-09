@@ -23,6 +23,7 @@ Siika2D::Siika2D()
 	s2d_info("SIIKA CREATED");
 	_boxWorld = new b2World(b2Vec2(0.f, -5.f));
 	_boxWorld->SetContactListener(&_collisionListener);
+	_coordTransf = nullptr;
 	_input = nullptr;
 	_graphicsContext = nullptr;
 	_camera = nullptr;
@@ -71,10 +72,14 @@ void Siika2D::terminate()
 
 void Siika2D::initializeGraphics()
 {
+	
+
 	//if (!_graphicsContext)
 	_graphicsContext = new graphics::GraphicsContext(_application);
 	if (!_camera)
 	_camera = new graphics::Camera(_graphicsContext->getDisplaySize());
+	if (!_coordTransf)
+		_coordTransf = new misc::CoordTransform(_graphicsContext->getDisplaySize(), glm::vec2(2000, 2000), 100);
 	if (!_shaderManager)
 	_shaderManager = new graphics::ShaderManager(&_resourceManager, _graphicsContext->getDisplaySize(),_camera);
 	else

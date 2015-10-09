@@ -10,7 +10,7 @@ namespace misc
 		*/
 	public:
 		CoordTransform() :_deviceDimensions(glm::vec2(1280,760)),_userDimensions(glm::vec2(2000,2000)),_pixelsPerMeter(100){};
-		CoordTransform(glm::vec2 deviceDimensions, glm::vec2 userDimensions) :_deviceDimensions(deviceDimensions), _userDimensions(_userDimensions),_pixelsPerMeter(100){};
+		CoordTransform(glm::vec2 deviceDimensions, glm::vec2 userDimensions, int pixelsPerMeter) :_deviceDimensions(deviceDimensions), _userDimensions(_userDimensions), _pixelsPerMeter(pixelsPerMeter){};
 		~CoordTransform(){};
 		void setDeviceDimensions(glm::vec2 dimToSet){ _deviceDimensions = dimToSet; }
 		void setUserDimensions(glm::vec2 dimToSet){ _userDimensions = dimToSet; }

@@ -1,0 +1,11 @@
+9.10.2015
+- Losing focus works and returns properly
+- Improved sprite drawing and patching
+- Physics component added
+	- Access to b2world from siika->getB2World()
+	- Added physics component to gameobject
+- Coordinate transformation class added
+	- Access from siika->transfCrds();
+	- Defaults to device screen size, 2000x2000 for user coordinates and 100 pixels per meter for box2d
+	
+	
