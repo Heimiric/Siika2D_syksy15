@@ -14,5 +14,24 @@ void PhysicsComponent::init()
 	_fixtureDef.friction = _friction;
 	_fixtureDef.restitution = _restitution;
 	_body->CreateFixture(&_fixtureDef);
-
 };
+
+void PhysicsComponent::applyForce(b2Vec2 _force, bool wake)
+{
+	_body->ApplyForce(_force,_body->GetWorldCenter(), wake);
+}
+
+void PhysicsComponent::applyLinearForce(b2Vec2 _force, bool wake)
+{
+	_body->ApplyLinearImpulse(_force, _body->GetWorldCenter(), wake);
+}
+
+void PhysicsComponent::applyTorgue(float32 torgue, bool wake)
+{
+	_body->ApplyTorque(torgue, wake);
+}
+
+void PhysicsComponent::applyAngularTorgue(float32 torgue, bool wake)
+{
+	_body->ApplyAngularImpulse(torgue, wake);
+}

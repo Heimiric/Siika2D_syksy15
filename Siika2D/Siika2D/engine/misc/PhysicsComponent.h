@@ -27,6 +27,25 @@ namespace misc
 		const glm::vec2 getPosition(){ return _position; }
 		const glm::vec2 getSize(){ return _size; }
 
+
+		/**
+		Applies instant force to physics body
+		*/
+		void applyForce(b2Vec2 _force, bool wake = true);
+		/**
+		Applies linear force that reaches true velocity afte 1 sec
+		*/
+		void applyLinearForce(b2Vec2 _force, bool wake = true);
+		/**
+		Applies instant torgue force to physics body
+		*/
+		void applyTorgue(float32 torgue, bool wake);
+		/**
+		Applies linear torgue force to physics body
+		that reaches true velocity after 1 sec
+		*/
+		void applyAngularTorgue(float32 torgue, bool wake);
+
 		//Box2d Components
 		b2PolygonShape _shape;
 		b2Body * _body;
