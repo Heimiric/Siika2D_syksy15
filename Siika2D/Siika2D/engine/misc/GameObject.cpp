@@ -37,5 +37,7 @@ void GameObject::update()
 
 void GameObject::addComponent(Component* component)
 {
+	if (typeid(*component) == typeid(PhysicsComponent))
+		((PhysicsComponent*)component)->_body->SetUserData(this);
 	_components.insert(std::make_pair(&typeid(*component), component));
 }

@@ -11,6 +11,8 @@
 #include "Box2D\Box2D.h"
 #include <android/sensor.h>
 #include "../misc/Input.h"
+#include "../misc/CollisionListener.h"
+
 //#include "..\core\MemoryManager.h"
 
 namespace core
@@ -57,6 +59,7 @@ namespace core
 		graphics::Camera *_camera;
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
+		misc::collisionListener _collisionListener;
 	protected:
 		virtual ~Siika2D();
 		Siika2D();

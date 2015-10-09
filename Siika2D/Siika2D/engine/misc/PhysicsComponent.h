@@ -27,33 +27,19 @@ namespace misc
 		const glm::vec2 getPosition(){ return _position; }
 		const glm::vec2 getSize(){ return _size; }
 
+		//Box2d Components
 		b2PolygonShape _shape;
 		b2Body * _body;
 		b2BodyDef _bDef;
 		b2FixtureDef _fixtureDef;
-
+		
 	private:
-		void init()
-		{
-			_bDef.type = b2_dynamicBody;
-			_bDef.position.Set(_position.x, _position.y);
-			_shape.SetAsBox(_size.x, _size.y);
-
-			_body = core::Siika2D::UI()->_boxWorld->CreateBody(&_bDef);
-			//_world->CreateBody();
-			_fixtureDef.shape = &_shape;
-			_fixtureDef.density = _density;
-			_fixtureDef.friction = _friction;
-			_fixtureDef.restitution = _restitution;
-			
-			_body->CreateFixture(&_fixtureDef);
-		};
+		void init();
 		glm::vec2 _size, _position;
 		float _density;
 		float _restitution;
 		float _friction;
-
-		//Box2d Components
-
+		
+		
 	};
 }

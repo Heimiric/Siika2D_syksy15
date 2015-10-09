@@ -60,9 +60,24 @@ namespace misc
 				_components.erase(it);
 			}
 		}
+		int getId(){ return _id; }
+		int setId(int id){ _id = id; }
+		bool operator ==(const bool &b)
+		{
+			if (b == _id)
+				return true;
+			return false;
+		}
+		bool operator !=(const bool &b)
+		{
+			if (b != _id)
+				return true;
+			return false;
+		}
 
 	private:
 		using ComponentMap = std::unordered_map < const std::type_info*, Component* > ;
 		ComponentMap _components;
+		int _id;
 	};
 }
