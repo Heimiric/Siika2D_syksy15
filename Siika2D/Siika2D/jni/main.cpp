@@ -24,7 +24,7 @@ float orientation;
 b2BodyDef siikaBodyDef;
 b2Body* siikaBody;
 b2Body* groundBody;
-
+enum objs{whitefish, ground, bullet};
 colListener collisionListener;
 void doStuff()
 {
@@ -38,7 +38,7 @@ void doStuff()
 
 	for (int i = 0; i < siika->_input->touchPositionsActive(); i++)
 	{
-		position = siika->_input->touchPosition(i)._positionCurrent;
+		position = siika->_input->touchPosition(i)._positionCurrent + siika->_camera->getPosition();
 		scream->play();
 	}
 
@@ -52,9 +52,18 @@ void doStuff()
 		orientation = siika->_input->stick(i)._rotation;
 
 	}
+	std::vector<misc::GameObject*> *cols = nullptr;
+	if (cols = collisionListener.getCollisionsFor(&go))
+	{
+		if (!cols->empty())
+		{
+			cols->clear();
+			s2d_info("Tormays");
+		}
+	}
 
 	green += 2;
-
+	siika->_camera->setCameraPosition(go.getComponent<misc::TransformComponent>()->getPosition() - glm::vec2(640, 360));
 	std::vector<GLint> downKeys = siika->_input->getDownKeys();
 	for (int i = 0; i < downKeys.size(); i++)
 	{
@@ -138,7 +147,7 @@ void siika_init()
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
 	go.addComponent(physicsComp);
-
+	go.setId(whitefish);
 	for (int i = 0; i < 4; i++)
 	{
 		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));

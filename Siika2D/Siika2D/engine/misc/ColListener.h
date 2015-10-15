@@ -9,8 +9,29 @@ namespace misc
 class colListener:public b2ContactListener
 {
 public:
+	/**
+		Class for collision checking all gameobjects.
+		To check if a gameobject is colliding call getCollisionsFor(*GameObject to check) 
+		returned vector contains all collisions for the given GameObject or nullptr if no collisions are found.
+		When collisions have been handled the user needs to clear them from the vector.
+	*/
+
+	std::vector<misc::GameObject*>* getCollisionsFor(misc::GameObject * obj)
+	{
+		if (_collisions.find(obj) != _collisions.end())
+		{
+			if (_collisions.find(obj)->second.size() == 0)
+				return nullptr;
+			return &_collisions.find(obj)->second;
+		}
+		else
+			return nullptr;
+	}
+	std::map<misc::GameObject*, std::vector<misc::GameObject*>>* getAllCollisions(){ return &_collisions; }
 	colListener(){};
 	~colListener(){};
+private:
+
 	void BeginContact(b2Contact* contact)
 	{
 		void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
@@ -21,16 +42,8 @@ public:
 		addCollision(obj1, obj2);
 		addCollision(obj2, obj1);
 	};
-	void EndContact(b2Contact* contact){}
-
-	std::vector<misc::GameObject*>* getCollisionsFor(misc::GameObject * obj)
-	{
-		if (_collisions.find(obj) != _collisions.end())
-			return &_collisions.find(obj)->second;
-		else
-			return nullptr;
-	}
-private:
+	//Implement if needed
+	//void EndContact(b2Contact* contact){}
 	std::map<misc::GameObject*, std::vector<misc::GameObject*>> _collisions;
 	void addCollision(misc::GameObject* obj1, misc::GameObject* obj2)
 	{
