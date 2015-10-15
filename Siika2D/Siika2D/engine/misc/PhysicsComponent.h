@@ -29,22 +29,27 @@ namespace misc
 
 
 		/**
-		Applies instant force to physics body
+		Applies instant force to physics body, adds to old movement vector
 		*/
-		void applyForce(b2Vec2 _force, bool wake = true);
+		void applyForce(glm::vec2 _force, bool wake = true);
+		void applyForce(glm::vec2 _force, glm::vec2 _point, bool wake = true);
 		/**
-		Applies linear force that reaches true velocity afte 1 sec
+		Applies linear force that reaches true velocity after 1 sec, replacing old movement vector
+		If you dont want force to affect center of mass, give point in range of 0-1 
 		*/
-		void applyLinearForce(b2Vec2 _force, bool wake = true);
+		void applyLinearForce(glm::vec2 _force, bool wake = true);
+		void applyLinearForce(glm::vec2 _force, glm::vec2 _point, bool wake = true);
 		/**
 		Applies instant torgue force to physics body
 		*/
 		void applyTorgue(float32 torgue, bool wake);
 		/**
-		Applies linear torgue force to physics body
-		that reaches true velocity after 1 sec
+		Applies linear torgue force to physics body that reaches true velocity after 1 sec
+		If you dont want force to affect center of mass, give point in range of 0-1
 		*/
 		void applyAngularTorgue(float32 torgue, bool wake);
+
+		void setGravityScale(float32 _scale);
 
 		//Box2d Components
 		b2PolygonShape _shape;
