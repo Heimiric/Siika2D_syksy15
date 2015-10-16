@@ -54,15 +54,15 @@ namespace misc
 		{
 			return b2Vec2(coordToTransform.x * _pixelsPerMeter, coordToTransform.y * _pixelsPerMeter);
 		}
-		/*
-		Transforms userCoordinates to device and then to Box2d
-		This will affect physics in devices with different screen resolution.
-		If you do not want this pixelsToBox2d(userCoordinates) should be used instead
-		glm::vec2 userToBox2d(glm::vec2 coordToTransform)
+		
+		//Transforms userCoordinates to device and then to Box2d
+		//This will affect physics in devices with different screen resolution.
+		//If you do not want this pixelsToBox2d(userCoordinates) should be used instead
+		glm::vec2 userToDToBox2d(glm::vec2 coordToTransform)
 		{
 			return (deviceToUser(coordToTransform) /= _pixelsPerMeter);
 		}
-		*/
+		
 	private:
 		glm::vec2 _deviceDimensions;
 		glm::vec2 _userDimensions;
