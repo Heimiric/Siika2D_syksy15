@@ -115,7 +115,13 @@ namespace misc
 			else if (sensor == GYROSCOPE)
 				return _gyroscopeData;
 		}
+		glm::vec2 getReleaseVec(void)
+		{
 
+			return _releaseVec;
+			_fingerUp = false;
+		}
+		bool _fingerUp;
 	protected:
 
 		/**
@@ -186,6 +192,8 @@ namespace misc
 		const ASensor* _gyroscopeSensor;
 		ASensorVector *_accelerometerData;
 		ASensorVector *_gyroscopeData;
+		glm::vec2 _releaseVec;
+	
 	};
 
 }

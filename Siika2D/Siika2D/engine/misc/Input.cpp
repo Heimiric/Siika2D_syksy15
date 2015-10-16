@@ -15,6 +15,7 @@ Input* Input::getInstance(android_app* app)
 
 Input::Input(android_app* app)
 {
+	_fingerUp = false;
 	_app = app;
 	_tickRates.insert(std::make_pair(ACCELEROMETER, 1.0f));
 	_tickRates.insert(std::make_pair(GYROSCOPE, 1.0f));
@@ -123,6 +124,7 @@ void Input::processTouchscreen(AInputEvent *event)
 		{
 			glm::vec2 pos(AMotionEvent_getX(event, i), AMotionEvent_getY(event, i));
 			_instance->_fingers[i]._positionStart = pos;
+			_fingerUp = false;
 
 		}
 		if (AMotionEvent_getAction(event) == AMOTION_EVENT_ACTION_UP)
@@ -131,6 +133,8 @@ void Input::processTouchscreen(AInputEvent *event)
 			_instance->_fingers[i]._positionEnd = pos;
 			if (_fingersDown == 1)
 				_fingersDown = 0;
+			_releaseVec = _instance->_fingers[i]._positionStart - pos;
+			_fingerUp = true;
 		}
 	}
 }
