@@ -54,10 +54,15 @@ Siika2D::~Siika2D()
 
 void Siika2D::initialize(android_app* app)
 {
-	_drawReady = false;
 	app->userData = this;
 	app->onAppCmd = this->processCommands;
 	_application = app;
+
+	_currentState = NOT_SET;
+
+	_siikaFlags.APP_FOCUS = false;
+	_siikaFlags.APP_RESUME = false;
+	_siikaFlags.APP_SURFACEREADY = false;
 
 	//Loading saved state if there is one
 	//getLatestState(app);
@@ -103,7 +108,7 @@ void Siika2D::initializeGraphics()
 
 	_shaderManager->useShader(true, true);
 
-	_drawReady = true;
+	_siikaFlags.APP_SURFACEREADY = true;
 }
 
 void Siika2D::initializeInput()
@@ -122,7 +127,7 @@ void Siika2D::terminateInput()
 void Siika2D::terminateGraphics()
 {
 	_graphicsContext->wipeContext();
-	_drawReady = false;
+	_siikaFlags.APP_SURFACEREADY = false;
 }
 void Siika2D::saveState(android_app* app)
 {	
@@ -179,12 +184,16 @@ void Siika2D::processCommands(android_app* app,int32_t command)
 		cmdString += "GAINED_FOCUS";
 		s2d_info(cmdString.c_str());
 		_instance->initializeInput();
+		_instance->_siikaFlags.APP_FOCUS = true;
+		_instance->_currentState = RESUMED;
 		break;
 
 	case APP_CMD_LOST_FOCUS:
 		cmdString += "LOST_FOCUS";
 		s2d_info(cmdString.c_str());
 		//_instance->terminateInput();
+		_instance->_siikaFlags.APP_FOCUS = false;
+		_instance->_currentState = PAUSED;
 		break;
 
 	case APP_CMD_TERM_WINDOW:
@@ -201,6 +210,7 @@ void Siika2D::processCommands(android_app* app,int32_t command)
 	case APP_CMD_PAUSE:
 		cmdString += "PAUSE";
 		s2d_info(cmdString.c_str());
+		_instance->_siikaFlags.APP_RESUME = false;
 		break;
 
 	case APP_CMD_STOP:
@@ -216,6 +226,7 @@ void Siika2D::processCommands(android_app* app,int32_t command)
 	case APP_CMD_RESUME:
 		cmdString += "RESUME";
 		s2d_info(cmdString.c_str());
+		_instance->_siikaFlags.APP_RESUME = true;
 		break;
 
 	case APP_CMD_WINDOW_REDRAW_NEEDED:
