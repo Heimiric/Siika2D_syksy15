@@ -139,6 +139,16 @@ void Input::processTouchscreen(AInputEvent *event)
 	}
 }
 
+bool Input::fingerUp()
+{
+	if (_fingerUp)
+	{
+		_fingerUp = false;
+		return true;
+	}
+	return _fingerUp;
+}
+
 void Input::processStickOrDpad(AInputEvent *event)
 {
 	_sticksActive = AMotionEvent_getPointerCount(event);

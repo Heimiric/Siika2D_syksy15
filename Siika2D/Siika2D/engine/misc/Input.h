@@ -121,8 +121,17 @@ namespace misc
 			return _releaseVec;
 			_fingerUp = false;
 		}
-		bool _fingerUp;
+
+		/**
+		Returns if finger is touching screen or not
+		*/
+		bool fingerUp();
 	protected:
+
+		/**
+		Bool if finger is touching screen, access through fingerUp();
+		*/
+		bool _fingerUp;
 
 		/**
 			Given sensor's data
