@@ -18,22 +18,25 @@ float pos;
 uint blue;
 uint green;
 float orientation;
-
+bool moved = false;
 //Definitions for projectile creation and update functions
 void createProjectile(glm::vec2 flightVector, glm::vec2 startPos);
 void updateProjectiles();
 //Demostration gameobjects
 misc::GameObject go;
 misc::GameObject *groundGo;
-b2BodyDef siikaBodyDef;
-b2Body* siikaBody;
-b2Body* groundBody;
 std::vector<misc::GameObject*> projectiles;
+//Pointer to coordinate transformation class
 misc::CoordTransform * trnsf;
 //Enum used to identify game object types
-enum objs{whitefish, ground, bullet};
+enum objs{ whitefish, ground, bullet };
 //Creates and initialises collision listener
 colListener collisionListener;
+
+//These are called when program goes to pause and resums
+//Can be used for example pausing music and soudeffects
+void siika_onPause(){};
+void siika_onResume(){};
 void doStuff()
 {
 	//Gets the keys that are held down on the device and prints their id's to logcat
@@ -51,8 +54,8 @@ void doStuff()
 		//Plays sound when user touches screen
 		scream->play();
 	}
-
-	if (siika->_input->_fingerUp) //Nostanut sormen
+	//Gets swip vector from scren once finger is no longer touching
+	if (siika->_input->fingerUp())
 	{
 		createProjectile(siika->_input->getReleaseVec(), go.getComponent<misc::TransformComponent>()->getPosition());
 	}
@@ -75,14 +78,15 @@ void doStuff()
 	{
 		if (!cols->empty())
 		{
-			go.getComponent<misc::PhysicsComponent>()->applyForce(glm::vec2(100, 30));
+			//go.getComponent<misc::PhysicsComponent>()->applyForce(glm::vec2(100, 30));
 			cols->clear();
 			s2d_info("Tormays");
 		}
 	}
-	green += 2;
+	//Gets the position of the go gameobject (in device coordinates)
+	glm::vec2 goPosition = go.getComponent<misc::TransformComponent>()->getPosition();
 	//Sets camera center position to the go gameobjects position, 
-	//siika->_camera->setCameraPosition(go.getComponent<misc::TransformComponent>()->getPosition() - glm::vec2(640, 360));
+	siika->_camera->setCameraPosition(goPosition - glm::vec2(640, 360));
 
 	//Gets keys that are held down on the device and moves the camera when certain keys are pressed
 	//Works on shield ids are for Y,X,B and A keys
@@ -106,18 +110,33 @@ void doStuff()
 	}
 	//Steps the physics world in Box2D
 	//After this calling GameObject->update() will update physics for the game objects
-	siika->_boxWorld->Step(1.f/60.f, 6, 2);
+	siika->_boxWorld->Step(1.f / 60.f, 6, 2);
+
+	//purpose is to move ground with the gameobject: still incomplete
+	if ((((int)goPosition.x % 1280) < 100))
+	{
+		if (!moved)
+		{
+			moved = true;
+			//groundObj.getComponent<misc::TransformComponent>()->setPosition(glm::vec2(goPosition.x, -700));
+			//groundGo->getComponent<misc::PhysicsComponent>()->setPosition(glm::vec2(goPosition.x / 100, -7.f));
+			//GameObjecdt.move updates all existing components
+			//groundGo->move(trnsf->deviceToUser(glm::vec2(goPosition.x, 700)));
+		}
+	}
+	else
+		moved = false;
 
 	//Demostrates the use of coordinate conversion class
 	//Gets the coordinate from gameobjects physicscomponent and then transfroms it to usercoordinates
 	b2Vec2 siikaPos;
 	siikaPos = go.getComponent<misc::PhysicsComponent>()->_body->GetPosition();
 	glm::vec2 positionInPixels = trnsf->Box2dToPixels(glm::vec2(siikaPos.x, siikaPos.y));
-	
+
 	//Sets the color for the text
 	teksti->setColor(graphics::Color(0, green, blue, 255));
 	blue += 2;
-
+	green += 2;
 	if (blue > 254)
 		blue = 0;
 	if (green > 252)
@@ -138,7 +157,7 @@ void doStuff()
 	if (timer.getElapsedTime(TIME::SECONDS) > 2)
 		timer.reset();
 	//Clears graphicsContext must be called before draw
-	siika->_graphicsContext->clear(); 
+	siika->_graphicsContext->clear();
 	//Updates gameobjects this updates all componets including physics (box2d)
 	go.update();
 	groundGo->update();
@@ -165,9 +184,9 @@ void siika_init()
 	//Gets the texture for gameobject go
 	tex = siika->_textureManager->createTexture("testi_siika.png");
 	//Creates and sets all components to gameobject go
-	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
+	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(640, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	misc::TransformComponent* transComp = new misc::TransformComponent();
-	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(2.5, 1.2), 1, 1, 0.5);
+	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(0.64, 0.36), 1, 1, 0.5);
 	transComp->setPosition(glm::vec2(640, 100));
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
@@ -180,7 +199,7 @@ void siika_init()
 	//Constuctor used here creates transfrom, sprite and physics components and sets them
 	//Coordinantes and sizes given must be in usercoordinates these can be changed in siika->transfCrds()
 	//All Components created this way can still be accessed with GameObject.getComponent<misc::componentType>()
-	groundGo = new misc::GameObject(glm::vec2(0,1800),gTex,glm::vec2(2000,200),glm::vec2(0,0));
+	groundGo = new misc::GameObject(glm::vec2(0, 640), gTex, glm::vec2(2000, 100), glm::vec2(0, 0));
 	groundGo->setId(ground);
 	//Gets the physics component of the gameobject and sets its gravityscale to 0 (Is not affected by gravity)
 	groundGo->getComponent<misc::PhysicsComponent>()->setGravityScale(0);
@@ -202,8 +221,8 @@ void siika_init()
 	music = siika->_audioManager->createAudio("siika.ogg");
 	music->setLooping(true);
 	music->play();
-	
-	//Creates text sets the font and text string
+
+	//Creates text, sets the font and text string
 	teksti = siika->_textManager->createText();
 	teksti->setFont("arial.ttf");
 	teksti->setText("SIIKA2D");
@@ -216,34 +235,8 @@ void siika_init()
 
 	//Sets the move speed for camera when calling camera->moveCamera();
 	siika->_camera->setSpeed(8);
-	//Sets the background colore for the screen
+	//Sets the background color for the screen
 	siika->_graphicsContext->setClearColor(graphics::Color(38, 178, 170, 255));
-	/*
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -10.0f);
-	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 2.0f, b2Vec2(0.f, -2.f), 0.f);
-
-	groundBody = siika->_boxWorld->CreateBody(&groundBodyDef);
-	//groundBody = boxWorld.CreateBody(&groundBodyDef);
-	groundBody->CreateFixture(&groundBox, 0.0f);
-	*/
-	/*/Old physics
-	siikaBodyDef.type = b2_dynamicBody;
-	siikaBodyDef.position.Set(6.4, 0.f);
-	siikaBody = boxWorld.CreateBody(&siikaBodyDef);
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(2.5f, 1.2f);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.f;
-	fixtureDef.friction = 0.5f;
-	fixtureDef.restitution = 1.0f;
-
-	siikaBody->CreateFixture(&fixtureDef);
-	*/
-
 }
 
 void siika_main()
@@ -253,6 +246,7 @@ void siika_main()
 
 void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 {
+	//Uses wrong coordinates will be updated later
 	projectiles.push_back(new misc::GameObject());
 	misc::GameObject * newProj = projectiles[projectiles.size()];
 	misc::SpriteComponent* projsprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(startPos, glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5)));
@@ -279,7 +273,8 @@ void updateProjectiles()
 			{
 				if (p->getId() == bullet)
 				{
-					delete p;
+					//Need to do proper clear for colliding objects and for objects too far out
+					//delete p;
 					scream->play();
 				}
 			}

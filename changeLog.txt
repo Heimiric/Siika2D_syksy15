@@ -1,3 +1,13 @@
+16.10.2015
+- On pause main loop stops and support for pausing audio with siika_onPause() and siika_onResume()
+- Simplified gameobject creation with a constructor that creates all components
+- Improved demostration program with added comments (incomplete)
+- Coordinate transformation updated
+- Added support for finger swipes to input
+- Collision detection. Use colListener class and register it in siika->_boxWorld->SetContactListener()
+- Updated physics component with with various functions from box2d (force, gravityscale, torque).
+ 
+
 9.10.2015
 - Losing focus works and returns properly
 - Improved sprite drawing and patching
