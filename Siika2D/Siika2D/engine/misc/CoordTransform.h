@@ -10,7 +10,7 @@ namespace misc
 		*/
 	public:
 		CoordTransform() :_deviceDimensions(glm::vec2(1280,760)),_userDimensions(glm::vec2(2000,2000)),_pixelsPerMeter(100){};
-		CoordTransform(glm::vec2 deviceDimensions, glm::vec2 userDimensions, int pixelsPerMeter) :_deviceDimensions(deviceDimensions), _userDimensions(_userDimensions), _pixelsPerMeter(pixelsPerMeter){};
+		CoordTransform(glm::vec2 deviceDimensions, glm::vec2 userDimensions, int pixelsPerMeter) :_deviceDimensions(deviceDimensions), _userDimensions(userDimensions), _pixelsPerMeter(pixelsPerMeter){};
 		~CoordTransform(){};
 		void setDeviceDimensions(glm::vec2 dimToSet){ _deviceDimensions = dimToSet; }
 		void setUserDimensions(glm::vec2 dimToSet){ _userDimensions = dimToSet; }
@@ -21,7 +21,8 @@ namespace misc
 		//deviceCoordinate = userCoordinate / userDimensions * deviceDimensions
 		glm::vec2 userToDevice(glm::vec2 coordToTransform)
 		{
-			return coordToTransform / _userDimensions * _deviceDimensions;
+			glm::vec2 transf = coordToTransform / _userDimensions;
+			return  transf * _deviceDimensions;
 		}
 		/**
 			Transforms device coordinates to user coordinates
@@ -29,7 +30,8 @@ namespace misc
 		//userCoordinate = deviceCoordinate / deviceDimensions * userDimensions
 		glm::vec2 deviceToUser(glm::vec2 coordToTransform)
 		{
-			return coordToTransform / _deviceDimensions * _userDimensions;
+			glm::vec2 transf = coordToTransform / _deviceDimensions;
+			return  transf * _userDimensions;
 		}
 
 		/**
@@ -52,6 +54,15 @@ namespace misc
 		{
 			return b2Vec2(coordToTransform.x * _pixelsPerMeter, coordToTransform.y * _pixelsPerMeter);
 		}
+		/*
+		Transforms userCoordinates to device and then to Box2d
+		This will affect physics in devices with different screen resolution.
+		If you do not want this pixelsToBox2d(userCoordinates) should be used instead
+		glm::vec2 userToBox2d(glm::vec2 coordToTransform)
+		{
+			return (deviceToUser(coordToTransform) /= _pixelsPerMeter);
+		}
+		*/
 	private:
 		glm::vec2 _deviceDimensions;
 		glm::vec2 _userDimensions;

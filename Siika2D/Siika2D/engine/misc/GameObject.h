@@ -6,7 +6,7 @@
 #include "TransformComponent.h"
 #include "PhysicsComponent.h"
 #include "CoordTransform.h"
-
+#include "../core/Siika2D.h"
 namespace misc
 {
 	/**
@@ -17,6 +17,8 @@ namespace misc
 	{
 	public:
 		GameObject();
+		//Creates a gameobject with transfrom, physics and sprite components
+		GameObject(glm::vec2 position, graphics::Texture * spriteTexture, glm::vec2 spriteSize, glm::vec2 spriteOrigin);
 		~GameObject();
 
 		/**
@@ -60,6 +62,11 @@ namespace misc
 				_components.erase(it);
 			}
 		}
+		/**
+		Moves all components that require moving
+		Coordinates are given in user coordinates
+		*/
+		void move(glm::vec2 moveTo);
 		int getId(){ return _id; }
 		int setId(int id){ _id = id; }
 		bool operator ==(const bool &b)
@@ -78,6 +85,8 @@ namespace misc
 	private:
 		using ComponentMap = std::unordered_map < const std::type_info*, Component* > ;
 		ComponentMap _components;
+		CoordTransform * transf;
+
 		int _id;
 	};
 }
