@@ -82,7 +82,7 @@ AudioPlayer* Audio::getAvailable()
 	for (int i = 0; i < _playerCount; i++)
 	{
 		SLuint32 temp = _player.at(i)->getPlayState();
-		if ( temp == SL_PLAYSTATE_STOPPED )
+		if ( temp == SL_PLAYSTATE_STOPPED  || temp == SL_PLAYSTATE_PAUSED)
 			return _player[i];
 	}
 
