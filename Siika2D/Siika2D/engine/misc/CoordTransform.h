@@ -60,10 +60,15 @@ namespace misc
 		//If you do not want this pixelsToBox2d(userCoordinates) should be used instead
 		glm::vec2 userToDToBox2d(glm::vec2 coordToTransform)
 		{
-			return (deviceToUser(coordToTransform) /= _pixelsPerMeter);
+			glm::vec2 givenInMeters(coordToTransform.x / _pixelsPerMeter, coordToTransform.y / _pixelsPerMeter);
+			return userToDevice(coordToTransform) * givenInMeters / coordToTransform;
+			//return userToDevice(coordToTransform) * ((float)_pixelsPerMeter / (float)_pixelsPerMeter / (float)_pixelsPerMeter);
+			//return (deviceToUser(coordToTransform) /= _pixelsPerMeter);
 		}
 		
 	private:
+		//How many meters total in usedimensions
+		glm::vec2 metersInUser(){return glm::vec2(_userDimensions.x / _pixelsPerMeter, _userDimensions.y / _pixelsPerMeter);}
 		glm::vec2 _deviceDimensions;
 		glm::vec2 _userDimensions;
 		int _pixelsPerMeter;
