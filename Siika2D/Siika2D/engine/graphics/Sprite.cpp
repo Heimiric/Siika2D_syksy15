@@ -128,3 +128,98 @@ void Sprite::step()
 		
 	}
 }
+
+void Sprite::step(unsigned int begin, unsigned int end, bool loop)
+{
+	float width = _textureLR.x - _textureUL.x;
+	float height = _textureLR.y - _textureUL.y;
+
+	//Get number of sprites in horizontal line
+	unsigned int h_sprites = 0;
+	float begin_x = 0, begin_y = 0;
+	float end_x = 0, end_y = 0;
+
+	float temp = 1.0f;
+	while (temp >= width)
+	{
+		temp -= width;
+		h_sprites++;
+	}
+	//Get the location of start step
+	if (begin*width < 1)
+	{
+		begin_x = begin;
+		begin_y = 0;
+	}
+	else
+	{
+		begin_y = (begin - (begin % h_sprites)) / h_sprites;
+		begin_x = begin % h_sprites;
+	}
+
+	//Get the location of end step
+	if (end*width < 1)
+	{
+		end_x = end;
+		end_y = 0;
+	}
+	else
+	{
+		end_y = (end - (end % h_sprites)) / h_sprites;
+		end_x = end % h_sprites;
+	}
+
+	//Set start position
+	
+	if (_startStep == true)
+	{
+		_textureUL.y = begin_y*height;
+		_textureUL.x = begin_x*width;
+		_textureLR.y = begin_y*height + height;
+		_textureLR.x = begin_x*width + width;
+		_startStep = false;
+	}
+	else
+	{
+		//Needs to change horizontal position
+		if ((_textureLR.x + width) <= 1.0f)
+		{
+			_textureUL.x += width;
+			_textureLR.x += width;
+
+			if (_textureUL.x >= end_x*width && _textureUL.y >= end_y*height)
+			{
+				_startStep = true;
+				if (loop == false)
+					_draw = false;
+			}
+		}
+		else
+		{
+			//Needs to change vertical position
+			if (_textureLR.y + height <= 1.0f)
+			{
+				_textureUL.y = _textureUL.y + height;
+				_textureUL.x = 0.0f;
+				_textureLR.y += height;
+				_textureLR.x = width;
+
+				if (_textureUL.x >= end_x*width && _textureUL.y >= end_y*height)
+				{
+					_startStep = true;
+					if (loop == false)
+						_draw = false;
+				}
+			}
+			else//Go to first frame
+			{
+				_textureUL.y = 0.0f;
+				_textureUL.x = 0.0f;
+				_textureLR.y = height;
+				_textureLR.x = width;
+			}
+
+		}
+	}
+	
+}

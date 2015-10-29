@@ -54,10 +54,20 @@ namespace graphics
 		bool getVisible(){ return _draw; }
 		bool getToDelete(){ return _delete; }
 		void step();
+		
+		/** 
+		begin: start position in a spritesheet, frame's start from 0
+		end: end position in a spritesheet, frame's start from 0
+		loop: if loop = false sprite will not be drawn after last frame
+		Call before draw to set sprites start frame in the spritesheet
+		*/
+		void step(unsigned int begin, unsigned int end, bool loop=true);
+
+
 	protected:
 		Sprite(){};
 		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Shader * shader) :
-			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0), _shader(shader)
+			_position(position), _size(size), _origin(origin), _texture(nullptr), _col(nullptr), _rotationAngle(0), _shader(shader), _startStep(true)
 		{
 			_col = new Color(0, 0, 0, 0);
 		};
@@ -73,7 +83,7 @@ namespace graphics
 
 		*/
 		Sprite(glm::vec2 position, glm::vec2 size, glm::vec2 origin, Texture * TextureToSet, glm::vec2 textureUpperLeft, glm::vec2 textureLowerRigth, Shader * shader) :
-			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0), _draw(true), _delete(false), _shader(shader)
+			_position(position), _size(size), _origin(origin), _texture(TextureToSet), _textureUL(textureUpperLeft), _textureLR(textureLowerRigth), _col(nullptr), _rotationAngle(0), _draw(true), _delete(false), _shader(shader), _startStep(true)
 		{
 			_col = new Color(0, 0, 0, 0);
 		};
@@ -97,7 +107,7 @@ namespace graphics
 		glm::vec2 _texPos[4];
 		Color * _col;
 		Shader * _shader;
-		bool _draw, _delete;
+		bool _draw, _delete, _startStep;
 		void moveSprite();
 	};
 }
