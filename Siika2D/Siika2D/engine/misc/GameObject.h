@@ -62,6 +62,7 @@ namespace misc
 				_components.erase(it);
 			}
 		}
+		void setTransform(CoordTransform * tran){ transf = tran; }
 		/**
 		Moves all components that require moving
 		Coordinates are given in user coordinates

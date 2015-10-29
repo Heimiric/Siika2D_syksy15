@@ -54,10 +54,13 @@ void doStuff()
 		//Plays sound when user touches screen
 		scream->play();
 	}
-	//Gets swip vector from scren once finger is no longer touching
+	//Gets swipe vector from screen once finger is no longer touching
 	if (siika->_input->fingerUp())
 	{
-		createProjectile(siika->_input->getReleaseVec(), go.getComponent<misc::TransformComponent>()->getPosition());
+		//Gets the position of the go gameobject
+		glm::vec2 sPosition = go.getComponent<misc::TransformComponent>()->getPosition();
+		//Transforms the position to user coordinates and passes it to projectile creation function
+		createProjectile(siika->_input->getReleaseVec(), trnsf->deviceToUser(sPosition));
 	}
 
 	//Changes the sheet sprite for a sprite every 2 seconds
@@ -145,7 +148,7 @@ void doStuff()
 	if (pos > 1.0f)
 		pos = -1.0;
 
-	//Moves thesprites to a horizontal line
+	//Moves the sprites to a line
 	for (int i = 0; i < spriteVector.size(); i++)
 		spriteVector[i]->setPosition(glm::vec2(position.x + i * 300, position.y));
 	//Sets sprite rotation, gets rotatoin from sticks (float orientation)
@@ -161,7 +164,7 @@ void doStuff()
 	//Updates gameobjects this updates all componets including physics (box2d)
 	go.update();
 	groundGo->update();
-	//updateProjectiles();
+	updateProjectiles();
 	//Draws sprites
 	siika->_spriteManager->drawSprites();
 	//Draws texts
@@ -180,17 +183,21 @@ void siika_init()
 	//Creates the background picture (sprite)
 	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");
 	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0));
-
+	//Created before transform class in siika core is initialized, need to pass it here
+	go.setTransform(trnsf);
 	//Gets the texture for gameobject go
 	tex = siika->_textureManager->createTexture("testi_siika.png");
 	//Creates and sets all components to gameobject go
 	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(640, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	misc::TransformComponent* transComp = new misc::TransformComponent();
-	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(0.64, 0.36), 1, 1, 0.5);
+//	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(0.64, 0.36), 1, 1, 0.5);
+	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(10, 10), glm::vec2(0.64, 0.36), 1, 1, 0.5);
+
 	transComp->setPosition(glm::vec2(640, 100));
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
 	go.addComponent(physicsComp);
+	go.move(glm::vec2(1000, 1000));
 	go.setId(whitefish);
 
 	//Creates groundtexture
@@ -246,18 +253,27 @@ void siika_main()
 
 void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 {
+	startPos.y = -startPos.y;
 	//Uses wrong coordinates will be updated later
-	projectiles.push_back(new misc::GameObject());
-	misc::GameObject * newProj = projectiles[projectiles.size()];
+	misc::GameObject * sbullet = new misc::GameObject(startPos, sheet, glm::vec2(64, 64), glm::vec2(32, 32));
+	projectiles.push_back(sbullet);
+	misc::GameObject * newProj = projectiles[projectiles.size() - 1];
+	/*projectiles.push_back(new misc::GameObject());
 	misc::SpriteComponent* projsprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(startPos, glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5)));
 	misc::TransformComponent* projtransComp = new misc::TransformComponent();
 	misc::PhysicsComponent* projphysicsComp = new misc::PhysicsComponent(0.01f*startPos, glm::vec2(0.64, 0.64), 1, 1, 0.5);
 	projtransComp->setPosition(startPos);
+	
 
-	projsprtComp->setZ(10);
+	//projsprtComp->setZ(10);
+
 	newProj->addComponent(projtransComp);
 	newProj->addComponent(projsprtComp);
 	newProj->addComponent(projphysicsComp);
+	*/
+	newProj->move(startPos);
+	newProj->getComponent<misc::SpriteComponent>()->setZ(10);
+	newProj->getComponent<misc::PhysicsComponent>()->applyForce(flightVector);
 	newProj->setId(bullet);
 }
 void updateProjectiles()
@@ -280,7 +296,6 @@ void updateProjectiles()
 			}
 
 		}
-		else
-			proj->update();
+		proj->update();
 	}
 }

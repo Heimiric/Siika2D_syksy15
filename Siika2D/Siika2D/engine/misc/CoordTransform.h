@@ -48,11 +48,11 @@ namespace misc
 		//pixels = meters * pixelsPerMeter 
 		glm::vec2 Box2dToPixels(glm::vec2 coordToTransform)
 		{
-			return coordToTransform *= _pixelsPerMeter;
+			return glm::vec2(coordToTransform.x * (float)_pixelsPerMeter, coordToTransform.y * (float)_pixelsPerMeter);
 		}
 		b2Vec2 Box2dToPixels(b2Vec2 coordToTransform)
 		{
-			return b2Vec2(coordToTransform.x * _pixelsPerMeter, coordToTransform.y * _pixelsPerMeter);
+			return b2Vec2(coordToTransform.x * (float)_pixelsPerMeter, coordToTransform.y * (float)_pixelsPerMeter);
 		}
 		
 		//Transforms userCoordinates to device and then to Box2d
@@ -64,6 +64,14 @@ namespace misc
 			return userToDevice(coordToTransform) * givenInMeters / coordToTransform;
 			//return userToDevice(coordToTransform) * ((float)_pixelsPerMeter / (float)_pixelsPerMeter / (float)_pixelsPerMeter);
 			//return (deviceToUser(coordToTransform) /= _pixelsPerMeter);
+		}
+		//Transforms to User coordinates and then to device coordinates
+		glm::vec2 box2dToUToDevice(glm::vec2 coordToTransform)
+		{
+			glm::vec2 retVal = Box2dToPixels(coordToTransform); //In pixels | User
+			retVal = userToDevice(coordToTransform); // In device
+			//retVal = deviceToUser(coordToTransform);
+			return glm::vec2(retVal.x * (float)_pixelsPerMeter, retVal.y * (float)_pixelsPerMeter);
 		}
 		
 	private:

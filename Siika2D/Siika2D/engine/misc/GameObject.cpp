@@ -13,7 +13,7 @@ GameObject::GameObject(glm::vec2 position, graphics::Texture * spriteTexture, gl
 	addComponent(new SpriteComponent(core::Siika2D::UI()->_spriteManager->createSprite
 				(transf->userToDevice(position), transf->userToDevice(size), transf->userToDevice(origin), spriteTexture, glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f))));
 	//addComponent(new PhysicsComponent(transf->userToDToBox2d(-position), transf->pixelsToBox2d(size), 1, 1, 0.5)); //Need to debug this
-	addComponent(new PhysicsComponent(transf->pixelsToBox2d (-position), transf->pixelsToBox2d(size), 99999, 1, 0.5));
+	addComponent(new PhysicsComponent(transf->pixelsToBox2d(position), transf->pixelsToBox2d(size), 99999, 1, 0.5));
 	//addComponent(new PhysicsComponent(glm::vec2(0, -7.0), glm::vec2(12.8, .64), 999999, 1, 0.5));
 }
 
@@ -31,7 +31,10 @@ void GameObject::update()
 		if (physicsComp != nullptr)
 		{
 			b2Vec2 pos = physicsComp->_body->GetPosition();
-			pos = transf->Box2dToPixels(pos);
+			glm::vec2 gPos = transf->box2dToUToDevice(glm::vec2(pos.x, pos.y));
+			pos.x = gPos.x;
+			pos.y = gPos.y;
+			//pos = transf->Box2dToPixels(pos);
 			transformComp->setPosition(glm::vec2(pos.x, -pos.y));
 			//transformComp->setPosition(glm::vec2(pos.x * 100, -pos.y * 100));
 		}
@@ -47,6 +50,7 @@ void GameObject::update()
 }
 void GameObject::move(glm::vec2 moveTo)
 {
+	moveTo.y = -moveTo.y;
 	TransformComponent* transformComp = getComponent<TransformComponent>();
 	if (transformComp != nullptr)
 	{
