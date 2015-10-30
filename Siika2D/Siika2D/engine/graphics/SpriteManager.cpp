@@ -6,47 +6,33 @@ using namespace graphics;
 void SpriteManager::drawSprites()
 {
 	GLint err = glGetError();
-	s2d_assert(err == 0);
 	Texture * oldTexture = nullptr;
 	std::vector<GLfloat> vertices;
 	std::vector<GLint> indecis;
 	int spriteCount = 0;
 	Shader * curShader = nullptr;
 	std::vector<Sprite*> spritesToRemove;
-
-	//GLfloat vertices[16]; // Pos Tex
+	spriteBatcher(&_sprites);
 	//Goes through a list of shaders in use and sprites drawn with them / std::list<sprite>
 	for (unsigned int i = 0; i < _sprites.size(); i++)
 	{
-		//needs to do spritebatch here
-		//batchSprites(*it->second);
 		GLint p = position, c = color, t = texture;
 		curShader = _sprites[i]->_shader;
 
 		err = glGetError();
 		s2d_assert(err == 0);
-
 		curShader->use();
-
 		err = glGetError();
 		s2d_assert(err == 0);
-		//it->first->use(); // shader->use()
-		// TODO: Check for changes before recreating buffer
-		//BufferManager buf = (*it->second).buffer;
 		if(!curShader->hasColor())
 			c = unknown;
 		if(!curShader->hasTexture())
 			t = unknown;
 
-		err = glGetError();
-		s2d_assert(err == 0);
-
-		//_bufferManager = &buf;
 
 		_bufferManager->setAttributes(p, c, t);
 		Sprite * sprt = _sprites[i];
-		//Goes through all sprites drawn with a specific shader
-		
+		//Goes through all sprites drawn with a specific shader		
 		if(!(sprt)->_delete || !(sprt)->_draw)
 		{
 			glm::vec2 * positions = (sprt)->getPositions();
@@ -58,10 +44,10 @@ void SpriteManager::drawSprites()
 			else
 				_bufferManager->addRectangle(positions, textures, col);
 
-			//Pitää batchata / tarkistaa onko tekstuuri vaihtunut
+			//Tarkistaa onko tekstuuri vaihtunut
 			if (oldTexture != (sprt)->_texture);
-			glBindTexture(GL_TEXTURE_2D, (sprt)->_texture->getTexture());
-			_bufferManager->draw(); //This needs to be elsewhere
+				glBindTexture(GL_TEXTURE_2D, (sprt)->_texture->getTexture());
+			_bufferManager->draw();
 			_bufferManager->clear();
 		}
 		else
@@ -84,21 +70,6 @@ void SpriteManager::drawSprites()
 	spritesToRemove.clear();
 
 	glBindTexture(GL_TEXTURE_2D, 0u);
-	//err = glGetError();
-	//s2d_assert(err == 0);
-	//glBindTexture(GL_TEXTURE_2D, sprt->_texture->getTexture());
-	//err = glGetError();
-	//_bufferManager->draw();
-	////buf.draw();
-	//err = glGetError();
-	//s2d_assert(err == 0);
-
-	//glBindTexture(GL_TEXTURE_2D, 0u);
-	////glActiveTexture(0);
-	//_bufferManager->clear();
-	//err = glGetError();
-	//s2d_assert(err == 0);
-		
 	curShader->use(false);
 }
 

@@ -53,7 +53,6 @@ namespace graphics
 			BufferManager buffer;
 		};
 		BufferManager * _bufferManager;
-		void batchSprites(std::vector<Sprite*> *toBatch){};
 		std::vector<Sprite*>_sprites;
 		//std::unordered_map<Shader*, sprites_buffer*> _sprites;
 		///Batches the given vector of sprites
