@@ -1,3 +1,11 @@
+30.10.2015
+-Projectiles destroy each other in collision
+-Spritebatching turned on
+-Spritesheet animation works
+-Gameobject destructor fixed
+-Collision fixes
+-Added coordinate transformation functions
+
 16.10.2015
 - On pause main loop stops and support for pausing audio with siika_onPause() and siika_onResume()
 - Simplified gameobject creation with a constructor that creates all components
@@ -17,5 +25,8 @@
 - Coordinate transformation class added
 	- Access from siika->transfCrds();
 	- Defaults to device screen size, 2000x2000 for user coordinates and 100 pixels per meter for box2d
+
+
+
 	
 	
