@@ -37,7 +37,7 @@ private:
 		void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		misc::GameObject * obj1 = static_cast<misc::GameObject*>(bodyUserData);
 
-		bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+		bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
 		misc::GameObject * obj2 = static_cast<misc::GameObject*>(bodyUserData);
 		addCollision(obj1, obj2);
 		addCollision(obj2, obj1);
