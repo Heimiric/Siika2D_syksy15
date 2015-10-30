@@ -1,6 +1,7 @@
 #pragma once
 
 #include <typeinfo>
+#include <map>
 #include <unordered_map>
 #include "SpriteComponent.h"
 #include "TransformComponent.h"
@@ -84,7 +85,8 @@ namespace misc
 		}
 
 	private:
-		using ComponentMap = std::unordered_map < const std::type_info*, Component* > ;
+		using ComponentMap = std::map < const std::type_info*, Component* > ;
+		//using ComponentMap = std::unordered_map < const std::type_info*, Component* > ;
 		ComponentMap _components;
 		CoordTransform * transf;
 

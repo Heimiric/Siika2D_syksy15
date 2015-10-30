@@ -17,7 +17,11 @@ namespace misc
 			_sprite = sprite;
 		}
 
-		~SpriteComponent(){}
+		~SpriteComponent()
+		{
+			_sprite->setDelete(true);
+			_sprite = nullptr;
+		}
 
 		/**
 			Retrives sprite pointer from the component.

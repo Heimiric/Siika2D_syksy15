@@ -89,7 +89,7 @@ void doStuff()
 	//Gets the position of the go gameobject (in device coordinates)
 	glm::vec2 goPosition = go.getComponent<misc::TransformComponent>()->getPosition();
 	//Sets camera center position to the go gameobjects position, 
-	siika->_camera->setCameraPosition(goPosition - glm::vec2(640, 360));
+	//siika->_camera->setCameraPosition(goPosition - glm::vec2(640, 360));
 
 	//Gets keys that are held down on the device and moves the camera when certain keys are pressed
 	//Works on shield ids are for Y,X,B and A keys
@@ -190,14 +190,14 @@ void siika_init()
 	//Creates and sets all components to gameobject go
 	misc::SpriteComponent* sprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(glm::vec2(640, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
 	misc::TransformComponent* transComp = new misc::TransformComponent();
-//	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(6.4, 0), glm::vec2(0.64, 0.36), 1, 1, 0.5);
-	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(10, 10), glm::vec2(0.64, 0.36), 1, 1, 0.5);
-
-	transComp->setPosition(glm::vec2(640, 100));
+	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(4.0, -3.6), glm::vec2(0.64, 0.36), 1, 1, 0.5);
+	//misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(10, 10), glm::vec2(0.64, 0.36), 1, 1, 0.5);
+	physicsComp->setGravityScale(0);
+	//transComp->setPosition(glm::vec2(500, 400));
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
 	go.addComponent(physicsComp);
-	go.move(glm::vec2(1000, 1000));
+	//go.move(glm::vec2(1000, 1000));
 	go.setId(whitefish);
 
 	//Creates groundtexture
@@ -206,7 +206,7 @@ void siika_init()
 	//Constuctor used here creates transfrom, sprite and physics components and sets them
 	//Coordinantes and sizes given must be in usercoordinates these can be changed in siika->transfCrds()
 	//All Components created this way can still be accessed with GameObject.getComponent<misc::componentType>()
-	groundGo = new misc::GameObject(glm::vec2(0, 640), gTex, glm::vec2(2000, 100), glm::vec2(0, 0));
+	groundGo = new misc::GameObject(glm::vec2(0, -1900), gTex, glm::vec2(2000, 100), glm::vec2(0, 0));
 	groundGo->setId(ground);
 	//Gets the physics component of the gameobject and sets its gravityscale to 0 (Is not affected by gravity)
 	groundGo->getComponent<misc::PhysicsComponent>()->setGravityScale(0);
@@ -253,9 +253,14 @@ void siika_main()
 
 void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 {
+	
 	startPos.y = -startPos.y;
+	if (glm::length(flightVector) < 20)
+		return;
+	glm::vec2 temp = -(glm::normalize(flightVector) *  350.0f);
+	temp.y = -temp.y;
 	//Uses wrong coordinates will be updated later
-	misc::GameObject * sbullet = new misc::GameObject(startPos, sheet, glm::vec2(64, 64), glm::vec2(32, 32));
+	misc::GameObject * sbullet = new misc::GameObject(startPos + temp, sheet, glm::vec2(64, 64), glm::vec2(32, 32));
 	projectiles.push_back(sbullet);
 	misc::GameObject * newProj = projectiles[projectiles.size() - 1];
 	/*projectiles.push_back(new misc::GameObject());
@@ -271,31 +276,67 @@ void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 	newProj->addComponent(projsprtComp);
 	newProj->addComponent(projphysicsComp);
 	*/
-	newProj->move(startPos);
+	//newProj->move(startPos + temp);
 	newProj->getComponent<misc::SpriteComponent>()->setZ(10);
-	newProj->getComponent<misc::PhysicsComponent>()->applyForce(flightVector);
+
+	//newProj->getComponent<misc::PhysicsComponent>()->applyForce(1000.0f*temp);
+	glm::vec2 temp2 = -flightVector;
+	temp2.y = -temp2.y;
+	newProj->getComponent<misc::PhysicsComponent>()->setGravityScale(0.0f);
+	newProj->getComponent<misc::PhysicsComponent>()->applyLinearForce(temp2*250.0f);
 	newProj->setId(bullet);
 }
 void updateProjectiles()
 {
 
 	std::vector<misc::GameObject*> *pVec;
-	for (misc::GameObject * proj : projectiles)
-	{
 
-		if (pVec = collisionListener.getCollisionsFor(proj))
+	std::vector<misc::GameObject*>::iterator it;
+
+	it = projectiles.end();
+	it--;
+
+	if (!projectiles.empty())
+	{ 
+		for (it; it != projectiles.begin(); it--)
 		{
-			for (misc::GameObject * p : *pVec)
+			(*it)->update();
+			if (pVec = collisionListener.getCollisionsFor(*it))
 			{
-				if (p->getId() == bullet)
+				for (misc::GameObject* p : *pVec)
 				{
-					//Need to do proper clear for colliding objects and for objects too far out
-					//delete p;
-					scream->play();
+					if (p->getId() == bullet)
+					{
+						delete *it;
+						projectiles.erase(it);
+						scream->play();
+						break;
+					}
+					else
+					{
+						s2d_info("Collision");
+					}
 				}
 			}
-
 		}
-		proj->update();
 	}
+
+	//for (misc::GameObject * proj : projectiles)
+	//{
+
+	//	if (pVec = collisionListener.getCollisionsFor(proj))
+	//	{
+	//		for (misc::GameObject * p : *pVec)
+	//		{
+	//			if (p->getId() == bullet)
+	//			{
+	//				//Need to do proper clear for colliding objects and for objects too far out
+	//				//delete p;
+	//				scream->play();
+	//			}
+	//		}
+
+	//	}
+	//	proj->update();
+	//}
 }

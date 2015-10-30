@@ -44,6 +44,8 @@ namespace graphics
 		*/
 		Sprite * createSprite(Texture * texture);
 		Sprite * createSprite(Sprite * sprite);
+		//remove sprite
+		void removeSprite(Sprite*);
 		///Draws all created sprites
 		void drawSprites();
 	protected:

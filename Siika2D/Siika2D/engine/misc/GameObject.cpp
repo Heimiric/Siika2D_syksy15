@@ -17,6 +17,16 @@ GameObject::GameObject(glm::vec2 position, graphics::Texture * spriteTexture, gl
 
 GameObject::~GameObject()
 {
+	std::map < const std::type_info*, Component* >::iterator it;
+	it = _components.begin();
+
+	for (it; it != _components.end(); it++)
+	{
+		//delete it->first;
+		delete it->second;
+	}
+	_components.erase(_components.begin(), _components.end());
+	s2d_info("Should no longer exist");
 }
 
 void GameObject::update()
