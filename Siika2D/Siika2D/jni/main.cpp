@@ -255,56 +255,49 @@ void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 {
 	
 	startPos.y = -startPos.y;
+	//Does not create projectiles if the speed would be too small
 	if (glm::length(flightVector) < 20)
 		return;
+	//Sets the distance the projectile appears on so it does not collide with the object it spawns out of
 	glm::vec2 temp = -(glm::normalize(flightVector) *  350.0f);
 	temp.y = -temp.y;
-	//Uses wrong coordinates will be updated later
+	//Spawns the projectile and adds it to a vector
 	misc::GameObject * sbullet = new misc::GameObject(startPos + temp, sheet, glm::vec2(64, 64), glm::vec2(32, 32));
 	projectiles.push_back(sbullet);
 	misc::GameObject * newProj = projectiles[projectiles.size() - 1];
-	/*projectiles.push_back(new misc::GameObject());
-	misc::SpriteComponent* projsprtComp = new misc::SpriteComponent(siika->_spriteManager->createSprite(startPos, glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5)));
-	misc::TransformComponent* projtransComp = new misc::TransformComponent();
-	misc::PhysicsComponent* projphysicsComp = new misc::PhysicsComponent(0.01f*startPos, glm::vec2(0.64, 0.64), 1, 1, 0.5);
-	projtransComp->setPosition(startPos);
-	
-
-	//projsprtComp->setZ(10);
-
-	newProj->addComponent(projtransComp);
-	newProj->addComponent(projsprtComp);
-	newProj->addComponent(projphysicsComp);
-	*/
-	//newProj->move(startPos + temp);
 	newProj->getComponent<misc::SpriteComponent>()->setZ(10);
 
-	//newProj->getComponent<misc::PhysicsComponent>()->applyForce(1000.0f*temp);
 	glm::vec2 temp2 = -flightVector;
 	temp2.y = -temp2.y;
+	//Makes the projectile not be affected by gravity and gives it initial force to move which is dependant on the length of the finger swipe
 	newProj->getComponent<misc::PhysicsComponent>()->setGravityScale(0.0f);
 	newProj->getComponent<misc::PhysicsComponent>()->applyLinearForce(temp2*250.0f);
 	newProj->setId(bullet);
+
 }
 void updateProjectiles()
 {
 
 	std::vector<misc::GameObject*> *pVec;
-
 	std::vector<misc::GameObject*>::iterator it;
 
 	it = projectiles.end();
 	it--;
-
+	
 	if (!projectiles.empty())
-	{ 
+	{
+		//Goes through all created projectiles
 		for (it; it != projectiles.begin(); it--)
 		{
+			//Updates the projectile positions and collisions
 			(*it)->update();
+			//Check if there are any collisions and gets them to a vector pVec
 			if (pVec = collisionListener.getCollisionsFor(*it))
 			{
+				//Goes through all collisions for the projectile
 				for (misc::GameObject* p : *pVec)
 				{
+					//If it collides with another "bullet" it will be removed and a sound will play
 					if (p->getId() == bullet)
 					{
 						delete *it;
@@ -312,7 +305,7 @@ void updateProjectiles()
 						scream->play();
 						break;
 					}
-					else
+					else //If it collides with something else than a bullet a log message will be written
 					{
 						s2d_info("Collision");
 					}
@@ -320,23 +313,4 @@ void updateProjectiles()
 			}
 		}
 	}
-
-	//for (misc::GameObject * proj : projectiles)
-	//{
-
-	//	if (pVec = collisionListener.getCollisionsFor(proj))
-	//	{
-	//		for (misc::GameObject * p : *pVec)
-	//		{
-	//			if (p->getId() == bullet)
-	//			{
-	//				//Need to do proper clear for colliding objects and for objects too far out
-	//				//delete p;
-	//				scream->play();
-	//			}
-	//		}
-
-	//	}
-	//	proj->update();
-	//}
 }
