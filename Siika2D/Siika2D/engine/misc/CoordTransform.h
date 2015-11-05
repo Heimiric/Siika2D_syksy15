@@ -7,7 +7,7 @@ namespace misc
 	{
 		/**
 		Class for doing various coordinate transformations between user, device and box2d coordinates.
-		Preinitialized instance can be accessed from core::Siika2D::UI()->->transfCrds()
+		Preinitialized instance can be accessed from core::Siika2D::UI()->transfCrds()
 		Its loaded with devices reported screen dimensions and default values.
 
 		Default values are:

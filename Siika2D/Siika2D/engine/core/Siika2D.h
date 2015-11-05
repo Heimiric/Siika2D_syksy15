@@ -78,8 +78,12 @@ namespace core
 		graphics::Camera *_camera;
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
-		//misc::collisionListener _collisionListener;
 		misc::CoordTransform* transfCrds(){return _coordTransf;}
+		/**
+			Shutdown the application (causes a crash will be cleaned up by android)
+			Not recomended
+		*/
+		void exit(){ std::terminate(); }
 	protected:
 		virtual ~Siika2D();
 		Siika2D();
