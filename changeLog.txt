@@ -1,3 +1,8 @@
+6.11.2015
+- Support for scenes, does not work for physics components, physics need to be disabled before scene change
+- Added pause and resume for timer
+- Examples updated
+- Added comments
 30.10.2015
 -Projectiles destroy each other in collision
 -Spritebatching turned on

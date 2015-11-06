@@ -54,15 +54,14 @@ void doStuff()
 
 
 	//Gets all positions where user is holding finger down on the touchscreen
-	glm::vec2 sPos(0, 0);
 	bool print = false;
 	for (int i = 0; i < siika->_input->touchPositionsActive(); i++)
 	{
 		position = siika->_input->touchPosition(i)._positionCurrent + siika->_camera->getPosition();
-		sPos = siika->_input->touchPosition(i)._positionStart;
 		//Plays sound when user touches screen
-		//scream->play();
-		s2d_info("X: %.2f Y: %.2f", sPos.x, sPos.y);
+		scream->play();
+		//glm::vec2 sPos = siika->_input->touchPosition(i)._positionStart;
+		//s2d_info("X: %.2f Y: %.2f", sPos.x, sPos.y);
 	}
 
 	//Gets swipe vector from screen once finger is no longer touching
