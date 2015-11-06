@@ -20,6 +20,15 @@ namespace misc
 		*/
 		void start();
 		/**
+		Pauses the timer
+		*/
+		void pause();
+		/**
+		Resumes the timer
+		*/
+		void resume();
+
+		/**
 		Gets time in desired units enum TIME{SECONDS, MILLISECONDS, MICROSECONDS};
 		*/
 		double getElapsedTime(TIME time);
@@ -30,6 +39,8 @@ namespace misc
 			return false;
 		}
 	private:
-		std::clock_t _start;
+		std::clock_t _start, _pause;
+		double _pausedTime, _elapsedTime;
+		bool _paused;
 	};
 }
