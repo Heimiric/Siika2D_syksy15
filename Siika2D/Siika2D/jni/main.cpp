@@ -4,7 +4,11 @@
 #include "../engine/misc/timer.h"
 #include "../engine/misc/GameObject.h"
 #include <Box2D/Box2D.h>
+#include "../engine/core/Scene.h"
+
 //Handle to siika2d userinterface
+core::SceneManager * sMngr;
+core::Scene * scene;
 core::Siika2D *siika = core::Siika2D::UI();
 std::vector<graphics::Sprite*>spriteVector;
 graphics::Sprite * sheetSprite;
@@ -25,6 +29,8 @@ void updateProjectiles();
 //Demostration gameobjects
 misc::GameObject go;
 misc::GameObject *groundGo;
+misc::GameObject *sGo;
+graphics::Texture * gTex;
 std::vector<misc::GameObject*> projectiles;
 //Pointer to coordinate transformation class
 misc::CoordTransform * trnsf;
@@ -48,12 +54,17 @@ void doStuff()
 
 
 	//Gets all positions where user is holding finger down on the touchscreen
+	glm::vec2 sPos(0, 0);
+	bool print = false;
 	for (int i = 0; i < siika->_input->touchPositionsActive(); i++)
 	{
 		position = siika->_input->touchPosition(i)._positionCurrent + siika->_camera->getPosition();
+		sPos = siika->_input->touchPosition(i)._positionStart;
 		//Plays sound when user touches screen
-		scream->play();
+		//scream->play();
+		s2d_info("X: %.2f Y: %.2f", sPos.x, sPos.y);
 	}
+
 	//Gets swipe vector from screen once finger is no longer touching
 	if (siika->_input->fingerUp())
 	{
@@ -96,17 +107,38 @@ void doStuff()
 	std::vector<GLint> downKeys = siika->_input->getDownKeys();
 	for (int i = 0; i < downKeys.size(); i++)
 	{
+		if (downKeys[i] == 102)
+		{
+			sMngr->useScene(0);
+		}
+		if (downKeys[i] == 103)
+		{
+			if (!scene)
+			{
+				scene = sMngr->newScene();
+				sGo = new misc::GameObject(glm::vec2(0, 1500), gTex, glm::vec2(2000, 500), glm::vec2(0, 0));
+				sGo->getComponent<misc::PhysicsComponent>()->setGravityScale(1);
+				graphics::Text * text = siika->_textManager->createText();
+				text->setFont("arial.ttf");
+				text->setText("Scene2");
+				text->setPosition(-1.0, 0.45);
+				text->setFontSize(256);
+			}
+			else
+				scene->use();
+
+		}
 		if (downKeys[i] == 100)
 		{
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::UP);
-			go.getComponent<misc::TransformComponent>()->move(glm::vec2(0, -40));
+			//go.getComponent<misc::TransformComponent>()->move(glm::vec2(0, -40));		
 		}
 		if (downKeys[i] == 96)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::DOWN);
 		if (downKeys[i] == 97)
-			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RIGHT);
-		if (downKeys[i] == 99)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::LEFT);
+		if (downKeys[i] == 99)
+			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RIGHT);
 		if (downKeys[i] == 107)
 			siika->_camera->moveCamera(graphics::CAMERA_MOVEMENT::RESET);
 
@@ -175,6 +207,8 @@ void doStuff()
 
 void siika_init()
 {
+	scene = nullptr;
+	sMngr = new core::SceneManager();
 	//Gets a pointer to the pre-initialized coordinate transformation class
 	trnsf = siika->transfCrds();
 	//Sets collision listener to be used
@@ -182,7 +216,7 @@ void siika_init()
 	timer.start();
 	//Creates the background picture (sprite)
 	bg = siika->_textureManager->createTexture("testi_Siika2D_background.png");
-	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0));
+	siika->_spriteManager->createSprite(glm::vec2(640, 360), glm::vec2(1280, 720), glm::vec2(640, 360), bg, glm::vec2(0, 0), glm::vec2(1.0, 1.0))->setZ(50);
 	//Created before transform class in siika core is initialized, need to pass it here
 	go.setTransform(trnsf);
 	//Gets the texture for gameobject go
@@ -193,6 +227,7 @@ void siika_init()
 	misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(4.0, -3.6), glm::vec2(0.64, 0.36), 1, 1, 0.5);
 	//misc::PhysicsComponent* physicsComp = new misc::PhysicsComponent(glm::vec2(10, 10), glm::vec2(0.64, 0.36), 1, 1, 0.5);
 	physicsComp->setGravityScale(0);
+	sprtComp->setZ(3);
 	//transComp->setPosition(glm::vec2(500, 400));
 	go.addComponent(transComp);
 	go.addComponent(sprtComp);
@@ -201,7 +236,7 @@ void siika_init()
 	go.setId(whitefish);
 
 	//Creates groundtexture
-	graphics::Texture * gTex = siika->_textureManager->createTexture("groundtx.png");
+	gTex = siika->_textureManager->createTexture("groundtx.png");
 	//Creates ground gameobject and set all components
 	//Constuctor used here creates transfrom, sprite and physics components and sets them
 	//Coordinantes and sizes given must be in usercoordinates these can be changed in siika->transfCrds()
@@ -210,11 +245,12 @@ void siika_init()
 	groundGo->setId(ground);
 	//Gets the physics component of the gameobject and sets its gravityscale to 0 (Is not affected by gravity)
 	groundGo->getComponent<misc::PhysicsComponent>()->setGravityScale(0);
-
+	groundGo->getComponent<misc::SpriteComponent>()->setZ(1);
 	//Creates 4 sprites
 	for (int i = 0; i < 4; i++)
 	{
 		spriteVector.push_back(siika->_spriteManager->createSprite(glm::vec2(100, 100), glm::vec2(256, 128), glm::vec2(168, 63), tex, glm::vec2(0, 0), glm::vec2(1.0, 1.0)));
+		spriteVector[i]->setZ(4);
 	}
 	//Creates a sprite that uses spritesheets
 	sheet = siika->_textureManager->createTexture("testi_tekstuuri.png");
@@ -271,7 +307,7 @@ void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 	temp2.y = -temp2.y;
 	//Makes the projectile not be affected by gravity and gives it initial force to move which is dependant on the length of the finger swipe
 	newProj->getComponent<misc::PhysicsComponent>()->setGravityScale(0.0f);
-	newProj->getComponent<misc::PhysicsComponent>()->applyLinearForce(temp2*250.0f);
+	newProj->getComponent<misc::PhysicsComponent>()->applyLinearForce(temp2*150.0f);
 	newProj->setId(bullet);
 
 }

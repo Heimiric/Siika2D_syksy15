@@ -50,7 +50,7 @@ namespace core
 	class Siika2D
 	{
 		friend class AndroidInterface;
-
+		friend class SceneManager;
 	public:
 
 
@@ -79,11 +79,6 @@ namespace core
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
 		misc::CoordTransform* transfCrds(){return _coordTransf;}
-		/**
-			Shutdown the application (causes a crash will be cleaned up by android)
-			Not recomended
-		*/
-		void exit(){ std::terminate(); }
 	protected:
 		virtual ~Siika2D();
 		Siika2D();
