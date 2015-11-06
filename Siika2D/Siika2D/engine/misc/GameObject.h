@@ -19,7 +19,7 @@ namespace misc
 	public:
 		GameObject();
 		//Creates a gameobject with transfrom, physics and sprite components
-		GameObject(glm::vec2 position, graphics::Texture * spriteTexture, glm::vec2 spriteSize, glm::vec2 spriteOrigin);
+		GameObject(glm::vec2 position, graphics::Texture * spriteTexture, glm::vec2 spriteSize, glm::vec2 spriteOrigin, bool physics = true);
 		~GameObject();
 
 		/**

@@ -6,13 +6,14 @@ GameObject::GameObject()
 {
 	transf = core::Siika2D::UI()->transfCrds();
 }
-GameObject::GameObject(glm::vec2 position, graphics::Texture * spriteTexture, glm::vec2 size, glm::vec2 origin)
+GameObject::GameObject(glm::vec2 position, graphics::Texture * spriteTexture, glm::vec2 size, glm::vec2 origin, bool physics)
 {
 	transf = core::Siika2D::UI()->transfCrds();
 	addComponent(new TransformComponent());
 	addComponent(new SpriteComponent(core::Siika2D::UI()->_spriteManager->createSprite
 				(transf->userToDevice(position), transf->userToDevice(size), transf->userToDevice(origin), spriteTexture, glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f))));
-	addComponent(new PhysicsComponent(transf->pixelsToBox2d(position), transf->pixelsToBox2d(size), 1, 1, 0.5));
+	if (physics)
+		addComponent(new PhysicsComponent(transf->pixelsToBox2d(position), transf->pixelsToBox2d(size), 1, 1, 0.5));
 }
 
 GameObject::~GameObject()
