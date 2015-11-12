@@ -102,7 +102,7 @@ void Sprite::step()
 
 
 	//Needs to change horizontal position
-	if((_textureLR.x + width) <= 1.0f)
+	if((_textureLR.x + width) <= 1.05f)
 	{
 		_textureUL.x += width;
 		_textureLR.x += width;
@@ -111,7 +111,7 @@ void Sprite::step()
 	else
 	{
 		//Needs to change vertical position
-		if(_textureLR.y + height <= 1.0f)
+		if(_textureLR.y + height <= 1.05f)
 		{
 			_textureUL.y = _textureUL.y + height;
 			_textureUL.x = 0.0f;
@@ -145,6 +145,9 @@ void Sprite::step(unsigned int begin, unsigned int end, bool loop)
 		temp -= width;
 		h_sprites++;
 	}
+	h_sprites = round(1.0f / width);
+	if (h_sprites != 5)
+		bool eh = false;
 	//Get the location of start step
 	if (begin*width < 1)
 	{
@@ -182,7 +185,7 @@ void Sprite::step(unsigned int begin, unsigned int end, bool loop)
 	else
 	{
 		//Needs to change horizontal position
-		if ((_textureLR.x + width) <= 1.0f)
+		if ((_textureLR.x + width) <= 1.05f)
 		{
 			_textureUL.x += width;
 			_textureLR.x += width;
@@ -197,7 +200,7 @@ void Sprite::step(unsigned int begin, unsigned int end, bool loop)
 		else
 		{
 			//Needs to change vertical position
-			if (_textureLR.y + height <= 1.0f)
+			if (_textureLR.y + height <= 1.05f)
 			{
 				_textureUL.y = _textureUL.y + height;
 				_textureUL.x = 0.0f;

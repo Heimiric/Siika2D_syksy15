@@ -5,6 +5,7 @@
 #include "..\misc\color.h"
 #include <gtx/transform.hpp>
 #include "Shader.h"
+#include "math.h"
 
 namespace graphics
 {
