@@ -13,8 +13,7 @@
 #include <android/sensor.h>
 #include "../misc/Input.h"
 #include "../misc/CoordTransform.h"
-#include "../misc/ColListener.h"
-
+//#include "../misc/ColListener.h"
 //#include "..\core\MemoryManager.h"
 
 namespace core

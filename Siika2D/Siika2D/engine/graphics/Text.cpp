@@ -81,9 +81,10 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
 	float y = -_position.y;
 	float scaleX = 2.0 / displaySize.x;
 	float scaleY = 2.0 / displaySize.y;
-
+	_buffer.bindBuffer();
 	// T‰m‰ silmukka piirt‰‰ tekstin. Joka kirjaimelle oma kuva (tekstuuri)
-	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++) {
+	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++) 
+	{
 		if (FT_Load_Char(_fontFace, *pointerToText, FT_LOAD_RENDER))
 			continue;
 
@@ -115,7 +116,7 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
 		};
 
 		_buffer.setBufferData(box, sizeof(box));
-		_buffer.bindBuffer();
+		//_buffer.bindBuffer();
 
 
 		error = glGetError();

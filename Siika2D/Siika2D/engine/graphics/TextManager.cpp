@@ -18,7 +18,12 @@ TextManager::TextManager(core::ResourceManager* resourceManager, ShaderManager* 
 
 TextManager::~TextManager()
 {
-
+	std::vector<Text*>::iterator it;
+	for (it = _texts.begin(); it != _texts.end(); it++)
+	{
+		delete *it;
+	}
+	_texts.empty();
 }
 
 

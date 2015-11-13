@@ -94,3 +94,10 @@ void ShaderManager::ReinitializeShaders()
 		_shaders[i]->linkProgram();
 	}
 }
+
+ShaderManager::~ShaderManager()
+{ 
+	for (std::vector<Shader*>::iterator it = _shaders.begin(); it != _shaders.end(); it++)
+		delete *it;
+	_shaders.empty(); 
+}

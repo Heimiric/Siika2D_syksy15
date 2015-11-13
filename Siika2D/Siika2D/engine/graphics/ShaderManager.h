@@ -69,7 +69,7 @@ namespace graphics
 		};
 
 		void initializeProjection();
-		~ShaderManager(){ _shaders.empty(); }
+		~ShaderManager();// { _shaders.empty(); }
 		//Finds already created shader in _shaders
 		Shader * findShader(const char * vertSource, const char * fragSource);
 		//Reinitializes shaders

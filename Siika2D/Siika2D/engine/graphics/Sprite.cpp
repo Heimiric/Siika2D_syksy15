@@ -140,14 +140,7 @@ void Sprite::step(unsigned int begin, unsigned int end, bool loop)
 	float end_x = 0, end_y = 0;
 
 	float temp = 1.0f;
-	while (temp >= width)
-	{
-		temp -= width;
-		h_sprites++;
-	}
 	h_sprites = round(1.0f / width);
-	if (h_sprites != 5)
-		bool eh = false;
 	//Get the location of start step
 	if (begin*width < 1)
 	{

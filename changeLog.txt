@@ -1,3 +1,7 @@
+13.11.2015
+- Fixed spritesheet frame changing
+- Fixed Some possible memory leaks (still a memory leak somewhere in draw texts)
+
 6.11.2015
 - Support for scenes, does not work for physics components, physics need to be disabled before scene change
 - Added pause and resume for timer
