@@ -13,7 +13,8 @@ Texture::Texture(int width, int height, std::vector<unsigned char>* imageData)
 
 Texture::~Texture()
 {
-
+	//For some reason this is called too early. Something wrong in resource manager=
+	//glDeleteTextures(1, &_texture);
 }
 
 void Texture::initialize()

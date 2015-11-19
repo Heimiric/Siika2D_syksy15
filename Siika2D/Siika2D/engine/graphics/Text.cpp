@@ -2,7 +2,7 @@
 
 using namespace graphics;
 
-Text::Text(core::ResourceManager* resourceManager, FT_Library* ftLibrary) :_buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW), _color(255, 255, 255, 255)
+Text::Text(core::ResourceManager* resourceManager, FT_Library* ftLibrary) :_color(255, 255, 255, 255)
 {
 	_resourceManager = resourceManager;
 	_library = ftLibrary;
@@ -61,9 +61,9 @@ Color Text::getColor()
 	return _color;
 }
 
-void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
+void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf)
 {
-	_buffer.bindBuffer();
+	//_buffer.bindBuffer();
 
 	//Position vertex attribute pointer
 	glVertexAttribPointer(posLoc, 4, GL_FLOAT, GL_FALSE, 0, reinterpret_cast <GLvoid*>(0));
@@ -76,17 +76,20 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
 	const char* pointerToText;
 
 	FT_GlyphSlot glyph = _fontFace->glyph;
-
+	GLuint texname;
 	float x = _position.x;
 	float y = -_position.y;
 	float scaleX = 2.0 / displaySize.x;
 	float scaleY = 2.0 / displaySize.y;
-	_buffer.bindBuffer();
 	// Tämä silmukka piirtää tekstin. Joka kirjaimelle oma kuva (tekstuuri)
-	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++) 
+	
+	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++)
 	{
+		//glGenTextures(1, &texname);
+		//glBindTexture(GL_TEXTURE_2D, texname);
 		if (FT_Load_Char(_fontFace, *pointerToText, FT_LOAD_RENDER))
 			continue;
+
 
 		glTexImage2D(
 			GL_TEXTURE_2D,
@@ -115,10 +118,8 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
 			{ x2 + w, -y2 - h, 1, 1 },
 		};
 
-		_buffer.setBufferData(box, sizeof(box));
-		//_buffer.bindBuffer();
-
-
+		buf->setBufferData(box, sizeof(box));
+		//_buffer.setBufferData(box, sizeof(box));
 		error = glGetError();
 		s2d_assert(error == 0);
 
@@ -129,7 +130,10 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc)
 
 		x += (glyph->advance.x >> 6) * scaleX;
 		y += (glyph->advance.y >> 6) * scaleY;
+		//glDeleteTextures(1, &texname);
+		//glBindTexture(GL_TEXTURE_2D, 0);
 	}
+	//glBindTexture(GL_TEXTURE_2D, 0);
 
-	_buffer.unbindBuffer();
+	//_buffer.unbindBuffer();
 }
