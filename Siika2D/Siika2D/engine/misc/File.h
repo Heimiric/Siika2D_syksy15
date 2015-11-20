@@ -7,24 +7,33 @@ namespace core
 }
 namespace misc
 {
+	/**
+	Class for accessing files in external storage (SD card)
+	Called from siika2d->UI()->getFile(filename)
+	Has methods for writting, appending and reading files
+	*/
 	class File
 	{
 	friend class core::ResourceManager;
 	public:
 		/**
-			Reads the file and returns it as a std::string
+			Reads the file and returns contents as a std::string
+			Returns empty string if no file exists
 		*/
 		std::string readFile();
 		/**
-			Empties the file and writes the contents of toWrite to it
+			Creates a new file or empties existing file and writes the contents of toWrite into it
+			Returns length of the file or -1 if error occurs
 		*/
 		long writeFile(std::string toWrite);
 		/**
-			Appends toWrite to the end of the file
+			Appends toWrite to the end of the file or creates a new file
+			Returns length of the file or -1 if error occurs
 		*/
 		long appendToFile(std::string toWrite);
 		/**
-			Gives access to the c FILE object for manual handling
+			Gives access to the c FILE object for manual handling 
+			Clearing memory is handled by resourceManager do not delete
 		*/
 		FILE * getFilePtr(){ return _file; }
 		//std::string readLine(){};
@@ -38,15 +47,10 @@ namespace misc
 		long getLength();
 		bool openFile(std::string mode);
 		void closeFile(){ fclose(_file); }
-		long _position,_length;
+		long _length;
 		FILE * _file;
 		std::string _name;
+		//Path of the stored files
 		std::string _path = "/sdcard/";
 	};
-/*	sFile::~sFile()
-	{
-		fclose(_file);
-		delete _file;
-	}
-	*/
 }

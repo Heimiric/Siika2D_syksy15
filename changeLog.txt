@@ -1,6 +1,10 @@
 20.11.2015
 -Fixed timer
 	-Timer now gets real time rather than time dependent on CPU tickrate.
+- Added support for reading and writing files to external storage
+	- Siika2d->getFile(filename);
+- Fixed memoryleak in draw texts
+
 13.11.2015
 - Fixed spritesheet frame changing
 - Fixed Some possible memory leaks (still a memory leak somewhere in draw texts)

@@ -92,19 +92,6 @@ misc::File * ResourceManager::getFile(std::string filename)
 		return &_FilesInExtStrg.at(filename);
 	}
 }
-FILE * ResourceManager::getFileForRead(std::string filename)
-{
-	char * buffer;
-	std::string path = "/sdcard/" + filename;
-	FILE* file = fopen(path.c_str(), "r");
-	return file;
-}
-FILE * ResourceManager::getFileForWrite(std::string filename)
-{
-	std::string path = "/sdcard/" +filename;
-	FILE* file = fopen(path.c_str(), "w+");
-	return file;
-}
 
 std::vector<unsigned char>* ResourceManager::loadFile(std::string filename)
 {
