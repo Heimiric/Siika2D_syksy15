@@ -129,6 +129,9 @@
     <ClCompile Include="engine\misc\PhysicsComponent.cpp">
       <Filter>Siika2D\engine\misc</Filter>
     </ClCompile>
+    <ClCompile Include="engine\misc\File.cpp">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="native_app_glue\android_native_app_glue.h">
@@ -228,6 +231,9 @@
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
     <ClInclude Include="engine\misc\PhysicsComponent.h">
+      <Filter>Siika2D\engine\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\misc\File.h">
       <Filter>Siika2D\engine\misc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -40,6 +40,7 @@
     <ClCompile Include="engine\graphics\Texture.cpp" />
     <ClCompile Include="engine\graphics\TextureManager.cpp" />
     <ClCompile Include="engine\misc\Color.cpp" />
+    <ClCompile Include="engine\misc\File.cpp" />
     <ClCompile Include="engine\misc\GameObject.cpp" />
     <ClCompile Include="engine\misc\Input.cpp" />
     <ClCompile Include="engine\misc\PhysicsComponent.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="engine\misc\Color.h" />
     <ClInclude Include="engine\misc\Component.h" />
     <ClInclude Include="engine\misc\CoordTransform.h" />
+    <ClInclude Include="engine\misc\File.h" />
     <ClInclude Include="engine\misc\GameObject.h" />
     <ClInclude Include="engine\misc\Input.h" />
     <ClInclude Include="engine\misc\PhysicsComponent.h" />

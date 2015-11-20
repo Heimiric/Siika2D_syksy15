@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <android/asset_manager.h>
-
+#include "..\misc\File.h"
 #include "ErrorHandler.h"
 
 namespace core
@@ -73,7 +73,8 @@ namespace core
 			Loads any file type or returns an existing one.
 			Returns file data as a vector of unsigned characters.
 		
-			*/
+		*/
+		misc::File * getFile(std::string filename);
 		std::vector<unsigned char>* loadFile(std::string filename);
 		//TODO:
 		//loadSound()
@@ -85,10 +86,9 @@ namespace core
 		std::map<std::string, std::string> _loadedTextFiles;
 		std::map<std::string, std::vector<unsigned char>> _loadedData;
 		AAssetManager* _androidAssetManager;
-
+		std::map<std::string, misc::File> _FilesInExtStrg;
 		//Load asset file from android's assetmanager
 		std::vector<unsigned char> loadAsset(std::string filename);
-
 		//TODO: container for other file types
 
 	};

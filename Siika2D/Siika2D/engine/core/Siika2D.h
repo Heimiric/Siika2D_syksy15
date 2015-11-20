@@ -78,12 +78,14 @@ namespace core
 		audio::AudioManager* _audioManager;
 		b2World * _boxWorld;
 		misc::CoordTransform* transfCrds(){return _coordTransf;}
+		misc::File* getFile(std::string name);
 		std::string * readTxtFile(std::string name);
-		/**
+		/*
 		Opens a file for writing user needs to close it with fclose(file)
-		*/
+		
 		FILE * openFileForWrite(std::string name);
 		FILE * openFileForRead(std::string name);
+		*/
 	protected:
 		virtual ~Siika2D();
 		Siika2D();

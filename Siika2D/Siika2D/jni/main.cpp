@@ -5,16 +5,19 @@
 #include "../engine/misc/GameObject.h"
 #include <Box2D/Box2D.h>
 #include "../engine/core/Scene.h"
+#include "../engine/misc/ColListener.h"
+#include "../engine/core/MemoryManager.h"
+#include <math.h>
 
 //Handle to siika2d userinterface
 core::SceneManager * sMngr;
 core::Scene * scene;
 core::Siika2D *siika = core::Siika2D::UI();
 std::vector<graphics::Sprite*>spriteVector;
-graphics::Sprite * sheetSprite;
+graphics::Sprite * sheetSprite, *sbullet;
 std::vector<audio::Audio*>audioVector;
 glm::vec2 position;
-graphics::Texture * tex, *bg, *sheet;
+graphics::Texture * tex, *bg, *sheet, *tbullet;
 graphics::Text * teksti;
 audio::Audio * scream, *music;
 misc::Timer timer;
@@ -32,6 +35,7 @@ misc::GameObject *groundGo;
 misc::GameObject *sGo;
 graphics::Texture * gTex;
 std::vector<misc::GameObject*> projectiles;
+std::string * txtFile;
 //Pointer to coordinate transformation class
 misc::CoordTransform * trnsf;
 //Enum used to identify game object types
@@ -76,7 +80,7 @@ void doStuff()
 	//Changes the sheet sprite for a sprite every 2 seconds
 	if (timer.getElapsedTime(TIME::SECONDS) > 2)
 	{
-		sheetSprite->step();
+		sheetSprite->step(0,9);
 	}
 	//Gets all the sticks that are active on the device
 	for (int i = 0; i < siika->_input->sticksActive(); i++)
@@ -206,6 +210,11 @@ void doStuff()
 
 void siika_init()
 {
+	misc::File * file = siika->getFile("textFile.txt");
+	pos = file->writeFile("kirjoitetaan tahan vahan tekstia\n");
+	std::string read = file->readFile();
+	s2d_info(read.c_str());
+	
 	scene = nullptr;
 	sMngr = new core::SceneManager();
 	//Gets a pointer to the pre-initialized coordinate transformation class
@@ -252,9 +261,15 @@ void siika_init()
 		spriteVector[i]->setZ(4);
 	}
 	//Creates a sprite that uses spritesheets
-	sheet = siika->_textureManager->createTexture("testi_tekstuuri.png");
+	int codeChange = 0;
+	sheet = siika->_textureManager->createTexture("sprite_ushiko.png");
 	//Texture coordinates are given as 0.5 0.5 this means that the sheet is 2x2 in size
-	sheetSprite = siika->_spriteManager->createSprite(glm::vec2(100, 200), glm::vec2(64, 64), glm::vec2(32, 32), sheet, glm::vec2(0, 0), glm::vec2(0.5, 0.5));
+	sheetSprite = siika->_spriteManager->createSprite(glm::vec2(400, 400), glm::vec2(256, 256), glm::vec2(128, 128), sheet, glm::vec2(0, 0), glm::vec2(0.2, 0.2));
+	sheetSprite->setZ(3);
+
+	tbullet = siika->_textureManager->createTexture("bubble.png");
+	//sbullet = siika->_spriteManager->createSprite(glm::vec2(400, 400), glm::vec2(64, 64), glm::vec2(32, 32), tbullet, glm::vec2(0, 0), glm::vec2(1, 1));
+	//sheetSprite->setZ(3);
 
 	//Creates effect audio and sets it to 10 simultaneous plays
 	scream = siika->_audioManager->createAudio("wilhelm_scream.ogg");
@@ -297,7 +312,7 @@ void createProjectile(glm::vec2 flightVector, glm::vec2 startPos)
 	glm::vec2 temp = -(glm::normalize(flightVector) *  350.0f);
 	temp.y = -temp.y;
 	//Spawns the projectile and adds it to a vector
-	misc::GameObject * sbullet = new misc::GameObject(startPos + temp, sheet, glm::vec2(64, 64), glm::vec2(32, 32));
+	misc::GameObject * sbullet = new misc::GameObject(startPos + temp, tbullet, glm::vec2(64, 64), glm::vec2(32, 32));
 	projectiles.push_back(sbullet);
 	misc::GameObject * newProj = projectiles[projectiles.size() - 1];
 	newProj->getComponent<misc::SpriteComponent>()->setZ(10);
@@ -315,17 +330,27 @@ void updateProjectiles()
 
 	std::vector<misc::GameObject*> *pVec;
 	std::vector<misc::GameObject*>::iterator it;
-
+	int i = projectiles.size();
 	it = projectiles.end();
 	it--;
 	
 	if (!projectiles.empty())
 	{
 		//Goes through all created projectiles
-		for (it; it != projectiles.begin(); it--)
+		for (it; it != projectiles.begin(); it--) //|| i >= 1
 		{
+			i--;
 			//Updates the projectile positions and collisions
 			(*it)->update();
+			glm::vec2 goPos = (*it)->getComponent<misc::TransformComponent>()->getPosition();
+			glm::vec2 cPos = siika->UI()->_camera->getPosition();
+			float distance = std::abs(goPos.x - cPos.x) + std::abs(goPos.y - cPos.y);
+			if (distance > 3000.0f)
+			{
+				delete *it;
+				projectiles.erase(it);
+				break;
+			}
 			//Check if there are any collisions and gets them to a vector pVec
 			if (pVec = collisionListener.getCollisionsFor(*it))
 			{

@@ -27,7 +27,7 @@ GameObject::~GameObject()
 		delete it->second;
 	}
 	_components.erase(_components.begin(), _components.end());
-	s2d_info("Should no longer exist");
+	//s2d_info("Should no longer exist");
 }
 
 void GameObject::update()

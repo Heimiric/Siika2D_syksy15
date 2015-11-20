@@ -79,19 +79,24 @@ std::string* ResourceManager::loadTextFile(std::string filename)
 		return &_loadedTextFiles.at(filename);
 	}
 }
+misc::File * ResourceManager::getFile(std::string filename)
+{
+	std::map<std::string, misc::File>::iterator it = _FilesInExtStrg.find(filename);
+	if (it != _FilesInExtStrg.end())
+	{
+		return &it->second;
+	}
+	else
+	{
+		_FilesInExtStrg.insert(std::make_pair(filename,misc::File(filename)));
+		return &_FilesInExtStrg.at(filename);
+	}
+}
 FILE * ResourceManager::getFileForRead(std::string filename)
 {
 	char * buffer;
 	std::string path = "/sdcard/" + filename;
 	FILE* file = fopen(path.c_str(), "r");
-	/*
-	fseek(file, 0, SEEK_END);
-	long lSize = ftell(file);
-	rewind(file);
-	buffer = (char*)malloc(sizeof(char)*lSize);
-	fread(buffer, 1, lSize, file);
-	s2d_info(buffer);
-	*/
 	return file;
 }
 FILE * ResourceManager::getFileForWrite(std::string filename)
@@ -99,27 +104,6 @@ FILE * ResourceManager::getFileForWrite(std::string filename)
 	std::string path = "/sdcard/" +filename;
 	FILE* file = fopen(path.c_str(), "w+");
 	return file;
-	/*
-	fputs("HelloWorld !\n", file);
-	fflush(file);
-	fclose(file);
-	return file;
-
-	off_t start, length;
-	AAsset* asset = nullptr;
-	asset = AAssetManager_open(_androidAssetManager, filename.c_str(),AASSET_MODE_STREAMING);
-	int i = AAsset_openFileDescriptor(asset, &start, &length);
-	*/
-	//FILE * file = fdopen(i, "w");
-	//std::string path = "../assets/" + filename;
-	//FILE * file = fopen(path.c_str(), "w");
-	/*
-	fseek(file, (long)start, SEEK_SET);
-	fputs("hello world!\n", file);
-	fflush(file);
-	return file;
-	*/
-	//fclose(file);
 }
 
 std::vector<unsigned char>* ResourceManager::loadFile(std::string filename)
