@@ -48,7 +48,7 @@ void TextManager::drawTexts()
 	GLint positionLoc, colorLoc;
 
 	setAttributes(positionLoc);
-	setTextureUniform(textureSampler, texture);
+	//setTextureUniform(textureSampler, texture);
 	setColorUniform(colorLoc);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	_buf.bindBuffer();
@@ -56,11 +56,11 @@ void TextManager::drawTexts()
 	{
 		if (_texts.at(i)->isInitialized)
 		{
-			_texts.at(i)->draw(_displaySize, positionLoc, colorLoc,&_buf);
+			_texts.at(i)->draw(_displaySize, positionLoc, colorLoc,&_buf, _program);
 		}
 	}
 	_buf.unbindBuffer();
-	glBindTexture(GL_TEXTURE_2D, 0);
+
 	glUseProgram(0);
 	_shaderManager->setCurrentShader(previousShader);
 }

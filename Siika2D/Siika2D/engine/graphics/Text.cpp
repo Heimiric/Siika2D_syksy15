@@ -61,12 +61,42 @@ Color Text::getColor()
 	return _color;
 }
 
-void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf)
+void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf, GLuint _program)
 {
 	//_buffer.bindBuffer();
 
 	//Position vertex attribute pointer
 	glVertexAttribPointer(posLoc, 4, GL_FLOAT, GL_FALSE, 0, reinterpret_cast <GLvoid*>(0));
+
+	GLint textureSampler = glGetUniformLocation(_program, "tex");
+
+	GLint error = glGetError();
+	//GLuint texture;
+	//glActiveTexture(GL_TEXTURE0);
+	//glGenTextures(1, &texture);
+	//GLint error = glGetError();
+	//s2d_assert(error == 0);
+
+	//glActiveTexture(GL_TEXTURE0);
+	//error = glGetError();
+	//s2d_assert(error == 0);
+
+	//glBindTexture(GL_TEXTURE_2D, texture);
+	//error = glGetError();
+	//s2d_assert(error == 0);
+
+	//glUniform1i(textureSampler, 0);
+	//error = glGetError();
+	//s2d_assert(error == 0);
+
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//error = glGetError();
+	//s2d_assert(error == 0);
+
+	//glGetUniformLocation();
 
 	//Uniform color
 	glm::vec4 glCol = _color.getGLColor();
@@ -76,7 +106,7 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf)
 	const char* pointerToText;
 
 	FT_GlyphSlot glyph = _fontFace->glyph;
-	GLuint texname;
+	//GLuint texname;
 	float x = _position.x;
 	float y = -_position.y;
 	float scaleX = 2.0 / displaySize.x;
@@ -85,6 +115,30 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf)
 	
 	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++)
 	{
+		GLuint texture;
+		glActiveTexture(GL_TEXTURE0);
+		glGenTextures(1, &texture);
+		s2d_assert(error == 0);
+
+		glActiveTexture(GL_TEXTURE0);
+		error = glGetError();
+		s2d_assert(error == 0);
+
+		glBindTexture(GL_TEXTURE_2D, texture);
+		error = glGetError();
+		s2d_assert(error == 0);
+
+		glUniform1i(textureSampler, 0);
+		error = glGetError();
+		s2d_assert(error == 0);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		error = glGetError();
+		s2d_assert(error == 0);
+
 		//glGenTextures(1, &texname);
 		//glBindTexture(GL_TEXTURE_2D, texname);
 		if (FT_Load_Char(_fontFace, *pointerToText, FT_LOAD_RENDER))
@@ -130,8 +184,8 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf)
 
 		x += (glyph->advance.x >> 6) * scaleX;
 		y += (glyph->advance.y >> 6) * scaleY;
-		//glDeleteTextures(1, &texname);
-		//glBindTexture(GL_TEXTURE_2D, 0);
+		glDeleteTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	//glBindTexture(GL_TEXTURE_2D, 0);
 
