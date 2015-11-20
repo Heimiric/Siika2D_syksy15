@@ -2,11 +2,10 @@
 
 using namespace misc;
 
-Timer::Timer(std::clock_t start)
+Timer::Timer()
 {
 	_pausedTime = 0.0;
 	_elapsedTime = 0.0;
-	start = _start;
 }
 
 
@@ -17,19 +16,22 @@ Timer::~Timer()
 void Timer::reset()
 {
 	_paused = false;
-	_start = std::clock();
+	clock_gettime(CLOCK_REALTIME, &_timeSpec);
+	_start = (_timeSpec.tv_sec * 1000 + _timeSpec.tv_nsec / 1e6);
 }
 void Timer::start()
 {
 	_paused = false;
-	_start = std::clock();
+	clock_gettime(CLOCK_REALTIME, &_timeSpec);
+	_start = (_timeSpec.tv_sec * 1000 + _timeSpec.tv_nsec / 1e6);
 }
 void Timer::pause()
 {
 	if (!_paused)
 	{
 		_paused = true;
-		_pause = std::clock();
+		clock_gettime(CLOCK_REALTIME, &_timeSpec);
+		_pause = (_timeSpec.tv_sec * 1000 + _timeSpec.tv_nsec / 1e6);
 	}
 }
 
@@ -38,7 +40,8 @@ void Timer::resume()
 	if (_paused)
 	{
 		_paused = false;
-		_pausedTime += (std::clock() - _pause);
+		clock_gettime(CLOCK_REALTIME, &_timeSpec);
+		_pausedTime += ((_timeSpec.tv_sec * 1000 + _timeSpec.tv_nsec / 1e6) - _pause);
 	}
 }
 double Timer::getElapsedTime(TIME time)
@@ -48,33 +51,40 @@ double Timer::getElapsedTime(TIME time)
 		switch (time)
 		{
 		case SECONDS:
-			return _elapsedTime/1000000;
+			return _elapsedTime / 1e3;
 			break;
 
 		case MILLISECONDS:
-			return _elapsedTime/1000;
+			return _elapsedTime;
 			break;
 
 		case MICROSECONDS:
-			return _elapsedTime;
+			return _elapsedTime * 1e3;
+			break;
+		case NANOSECONDS:
+			return _elapsedTime * 1e6;
 			break;
 		}
 	}
 	else
 	{
-		_elapsedTime = (std::clock() - _start - _pausedTime) / (double)(CLOCKS_PER_SEC / 1000000);
+		clock_gettime(CLOCK_REALTIME, &_timeSpec);
+		_elapsedTime = ((_timeSpec.tv_sec*1000 + _timeSpec.tv_nsec/1e6) - _start - _pausedTime);
 		switch (time)
 		{
 		case SECONDS:
-			return _elapsedTime/1000000;
+			return _elapsedTime / 1e3;
 			break;
 
 		case MILLISECONDS:
-			return _elapsedTime/1000;
+			return _elapsedTime;
 			break;
 
 		case MICROSECONDS:
-			return _elapsedTime;
+			return _elapsedTime * 1e3;
+			break;
+		case NANOSECONDS:
+			return _elapsedTime * 1e6;
 			break;
 		}
 	}
