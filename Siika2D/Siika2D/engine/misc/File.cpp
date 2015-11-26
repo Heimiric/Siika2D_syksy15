@@ -46,9 +46,10 @@ std::string File::readFile()
 		getLength();
 		char * buffer = (char*)malloc(sizeof(char)*_length);
 		fread(buffer, 1, _length, _file);
-		buffer[_length] = '\0';
+		//buffer[_length] = '\0';
 		std::string retVal = buffer;
 		delete buffer;
+		fclose(_file);
 		return retVal;
 	}
 	return "";

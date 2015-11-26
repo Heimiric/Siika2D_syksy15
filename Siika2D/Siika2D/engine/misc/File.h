@@ -38,11 +38,9 @@ namespace misc
 		FILE * getFilePtr(){ return _file; }
 		//std::string readLine(){};
 		//long writeLine(){};
-		
 		~File(){ delete _file; _file = nullptr; }
 	protected:
 		File(std::string name) :_name(name),_file(nullptr){};
-
 	private:
 		long getLength();
 		bool openFile(std::string mode);
