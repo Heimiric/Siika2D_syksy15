@@ -45,21 +45,21 @@ void TextManager::drawTexts()
 
 	GLint textureSampler;
 	GLuint texture;
-	GLint positionLoc, colorLoc;
+	GLint positionLoc = 0, colorLoc = 0;
 
-	setAttributes(positionLoc);
+	getAttributes(&positionLoc);
 	//setTextureUniform(textureSampler, texture);
-	setColorUniform(colorLoc);
+	getColorUniform(&colorLoc);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	_buf.bindBuffer();
 	for (int i = 0; i < _texts.size(); i++)
 	{
 		if (_texts.at(i)->isInitialized)
 		{
+			_buf.bindBuffer();
 			_texts.at(i)->draw(_displaySize, positionLoc, colorLoc,&_buf, _program);
+			_buf.unbindBuffer();
 		}
 	}
-	_buf.unbindBuffer();
 
 	glUseProgram(0);
 	_shaderManager->setCurrentShader(previousShader);
@@ -77,20 +77,21 @@ Shader* TextManager::createShaders()
 	return textShader;
 }
 
-void TextManager::setAttributes(GLint& positionLoc)
+void TextManager::getAttributes(GLint* positionLoc)
 {
-	positionLoc = glGetAttribLocation(_program, "coord");
-	s2d_assert(!(positionLoc == -1));
+	*positionLoc = glGetAttribLocation(_program, "coord");
+	s2d_assert(!(*positionLoc == -1));
 
-	glEnableVertexAttribArray(positionLoc);
+	glEnableVertexAttribArray(*positionLoc);
 
 	GLint error = glGetError();
 	s2d_assert(error == 0);
 }
 
-void TextManager::setColorUniform(GLint &colLoc)
+void TextManager::getColorUniform(GLint* colLoc)
 {
-	colLoc = glGetUniformLocation(_program, "color");
+	*colLoc = glGetUniformLocation(_program, "color");
+	s2d_assert(!(*colLoc == -1));
 
 	GLint error = glGetError();
 	s2d_assert(error == 0);

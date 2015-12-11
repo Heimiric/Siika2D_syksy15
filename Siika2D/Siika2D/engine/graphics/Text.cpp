@@ -115,7 +115,7 @@ void Text::draw(glm::vec2 displaySize, GLint posLoc, GLint colLoc, Buffer * buf,
 	
 	for (pointerToText = _text.c_str(); *pointerToText; pointerToText++)
 	{
-		GLuint texture;
+		GLuint texture = 0;
 		glActiveTexture(GL_TEXTURE0);
 		glGenTextures(1, &texture);
 		s2d_assert(error == 0);
